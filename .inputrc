@@ -1,0 +1,9 @@
+set editing-mode vi
+$if mode=vi
+set keymap vi-command
+Control-l: clear-screen
+"ciw": "lbcw"
+"dd": kill-whole-line
+"D": kill-line
+set keymap vi-insert
+"jj": vi-movement-mode 
