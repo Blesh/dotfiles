@@ -9,7 +9,7 @@ export LANG=en_US.UTF-8 # Get rid of locale error, not sure what those values do
 # http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Character-Highlighting
 PS1='%B%F{15}%1/ %f%b% ' 
 
-#alias vf='vim $(fzf)'
+alias vf='vim $(fzf)'
 alias ll="ls -lah"
 alias pip="pip3"
 alias vim="nvim"
@@ -42,6 +42,7 @@ export CC="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
 export CXX="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
 export PATH=/usr/local/Cellar/llvm/16.0.4/bin:$PATH
 
+export PATH="/Users/meinz/go/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PSQL_EDITOR=/usr/local/bin/nvim
 export HOMEBREW_NO_AUTO_UPDATE=1

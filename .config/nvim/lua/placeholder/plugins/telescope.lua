@@ -4,10 +4,9 @@ require('telescope').setup{
   defaults = {
     -- Default configuration for telescope goes here:
     -- config_key = value,
-    multi_icon = '',
-    results_title = '',
     prompt_prefix = '   ',
     selection_caret = '  ',
+    layout_strategy = "vertical",
     mappings = {
       i = {
         ["<C-q>"] = actions.close,
@@ -16,20 +15,18 @@ require('telescope').setup{
         ["<Tab>"] = actions.move_selection_next,
         ["<S-Tab"] = actions.move_selection_previous,
 
-        ["<C-y>"] = actions.preview_scrolling_up,
-        ["<C-e>"] = actions.preview_scrolling_down,
+        ["<C-u>"] = actions.preview_scrolling_up,
+        ["<C-d>"] = actions.preview_scrolling_down,
 
-        ["<C-u>"] = actions.results_scrolling_up,
-        ["<C-d>"] = actions.results_scrolling_down,
+        --["<C-u>"] = actions.results_scrolling_up,
+        --["<C-d>"] = actions.results_scrolling_down,
 
-        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
         ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
       },
 
       n = {
         ["<C-q>"] = actions.close,
-        
-        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+
         ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 
         ["j"] = actions.move_selection_next,
@@ -39,15 +36,15 @@ require('telescope').setup{
         ["H"] = actions.move_to_top,
         ["M"] = actions.move_to_middle,
         ["L"] = actions.move_to_bottom,
-        
+
         ["gg"] = actions.move_to_top,
         ["G"] = actions.move_to_bottom,
 
-        ["<C-y>"] = actions.preview_scrolling_up,
-        ["<C-e>"] = actions.preview_scrolling_down,
+        ["<C-u>"] = actions.preview_scrolling_up,
+        ["<C-d>"] = actions.preview_scrolling_down,
 
-        ["<C-u>"] = actions.results_scrolling_up,
-        ["<C-d>"] = actions.results_scrolling_down,
+        --["<C-u>"] = actions.results_scrolling_up,
+        --["<C-d>"] = actions.results_scrolling_down,
       },
     },
   },
@@ -60,14 +57,11 @@ require('telescope').setup{
             '--type',
             'symlink',
             '--hidden',
-            '--exclude', 
+            '--exclude',
             '.git',
           },
-          previewer = false,
-          promp_title = false,
+      prompt_title = false,
       },
-  },
-  extensions = {
   },
 }
 

@@ -46,10 +46,6 @@ vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 vim.keymap.set("v", "q", "<Esc>", opts)
 
--- telescope
-vim.keymap.set("n", "<leader>p", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
-vim.keymap.set("n", "<leader>s", "<cmd>Telescope live_grep<cr>", opts)
-
 -- tree
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
@@ -72,16 +68,46 @@ vim.keymap.set("n", "<leader>7", function() ui.nav_file(7) end)
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>l", function() vim.api.nvim_list_wins() end)
 
--- fzf_lua
+-- telescope
 
-vim.keymap.set("n", "<leader>f", "<cmd>lua require('fzf-lua').files()<CR>", {silent = true});
-vim.keymap.set("n", "<leader>p", "<cmd>lua require('fzf-lua').live_grep()<CR>", {silent = true});
-vim.keymap.set("n", "<leader>gl", "<cmd>lua require('fzf-lua').git_files()<CR>", {silent = true});
-vim.keymap.set("n", "<leader>hi", "<cmd>lua require('fzf-lua').highlights()<CR>", {silent = true});
-vim.keymap.set("n", "<leader>l", "<cmd>lua require('fzf-lua').lsp_finder()<CR>", {silent = true});
--- Use trouble instead of fzf diagnostics for now
--- vim.keymap.set("n", "<leader>sd", "<cmd>lua require('fzf-lua').diagnostics_document()<CR>", {silent = true});
---vim.keymap.set("n", "<leader>dp", "<cmd>lua require('fzf-lua').diagnostics_workspace()<CR>", {silent = true});
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>f', function()
+  builtin.find_files(require('telescope.themes').get_dropdown{
+    layout_strategy = "center",
+    layout_config = {
+      width = 0.5,
+      height = 0.4,
+      prompt_position = "top"
+    },
+    previewer = false,
+    prompt_title = false,
+  })
+end, {})
+
+vim.keymap.set('n', '<leader>gf', function()
+  builtin.git_files(require('telescope.themes').get_dropdown{
+    previewer = false,
+    prompt_title = false,
+  })
+end ,{})
+
+-- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+vim.keymap.set('n', '<leader>/', function()
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    previewer = false,
+    prompt_title = false,
+  })
+end, {})
+
+vim.keymap.set('n', '<leader>p', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>ci', builtin.lsp_incoming_calls, {})
+vim.keymap.set('n', '<leader>co', builtin.lsp_outgoing_calls, {})
+-- might no longer need trouble plugin using this
+vim.keymap.set('n', '<leader>sd', builtin.diagnostics, {})
+vim.keymap.set('n', '<leader>sgc', builtin.git_commits, {}) -- maybe?
+vim.keymap.set('n', '<leader>shi', builtin.highlights, {}) -- maybe?
+vim.keymap.set('n', '<leader>str', builtin.treesitter, {}) -- maybe?
+vim.keymap.set('n', '<leader>sht', builtin.help_tags, {}) -- maybe?
 
 -- lsp
 
@@ -89,30 +115,34 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
 vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
 vim.keymap.set('n', '<leader>w', vim.lsp.buf.hover, opts)
-vim.keymap.set('n', '<leader>ci', vim.lsp.buf.incoming_calls, opts)
-vim.keymap.set('n', '<leader>co', vim.lsp.buf.outgoing_calls, opts)
 vim.keymap.set('n', 'gR', vim.lsp.buf.references, opts)
---vim.keymap.set('n', 'gR', "<cmd>TroubleToggle lsp_references<cr>", opts)
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
 
 -- trouble
 
-vim.keymap.set('n', '<leader>d', '<cmd>TroubleToggle document_diagnostics<CR>', opts)
-vim.keymap.set('n', '<leader>D', '<cmd>TroubleToggle workspace_diagnostics<CR>', opts)
+vim.keymap.set('n', '<leader>sd', '<cmd>TroubleToggle document_diagnostics<CR>', opts)
+vim.keymap.set('n', '<leader>sD', '<cmd>TroubleToggle workspace_diagnostics<CR>', opts)
 
+-- https://github.com/AlexvZyl/nvim/blob/main/lua/alex/keymaps/utils.lua
+DAP_UI_ENABLED = false
+local function dap_toggle_ui()
+    require('dapui').toggle()
+    DAP_UI_ENABLED = true
+end
+local function dap_float_scope()
+    if not DAP_UI_ENABLED then return end
+    require('dapui').float_element 'scopes'
+end
 -- dap
--- vim.keymap.set('n', '<leader>B', '<Cmd>DapToggleBreakpoint<CR>', opts)
-vim.keymap.set('n', '<leader>B', function() require('dap').toggle_breakpoint() end)
--- vim.keymap.set('n', '<leader><leader>B', function() require('dap').clear_breakpoints() end)
--- vim.keymap.set('n', '<leader><leader>C', function() require('dap').continue() end)
-vim.keymap.set('n', '<leader>so', function() require('dap').step_over() end)
-vim.keymap.set('n', '<leader>si', function() require('dap').step_into() end)
-vim.keymap.set('n', '<leader>soo', function() require('dap').step_out() end)
--- vim.keymap.set('n', '<leader>dr', function() require('dap').repl.toggle() end)
--- vim.keymap.set('n', '<leader>dl', function() require('dap').run_last() end)
---vim.keymap.set({'n', 'v'}, '<leader>dh', function() require('dap.ui.widgets').hover() end)
---vim.keymap.set({'n', 'v'}, '<leader>dp', function() require('dap.ui.widgets').preview() end)
--- vim.keymap.set('n', '<leader>df', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.frames).toggle() end)
--- vim.keymap.set('n', '<leader>ds', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.scopes).togglet() end)
+vim.keymap.set('n', '<leader>Dc', function() require('dap').continue() end)
+vim.keymap.set('n', '<C-b>', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Right>', function() require('dap').step_into() end)
+vim.keymap.set('n', '<Down>', function() require('dap').step_over() end)
+vim.keymap.set('n', '<Left>', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Up>', function() require('dap').restart_frame() end)
+vim.keymap.set('n', '<leader>Dt', function() require('dap').terminate() end)
+vim.keymap.set('n', '<leader>Ds', function() dap_float_scope() end)
+vim.keymap.set('n', '<leader>Du', function() dap_toggle_ui() end)
+vim.keymap.set('n', '<leader>Dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)

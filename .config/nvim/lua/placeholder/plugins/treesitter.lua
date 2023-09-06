@@ -1,8 +1,17 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",   
+  ensure_installed = "all",
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = '<c-space>',
+      node_incremental = '<c-space>',
+      scope_incremental = '<c-s>',
+      node_decremental = '<M-space>',
+    },
+  },
 
   -- List of parsers to ignore installing (for "all")
   ignore_install = { "" },
