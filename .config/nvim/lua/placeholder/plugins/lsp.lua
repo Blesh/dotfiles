@@ -9,6 +9,7 @@ require("lspconfig").clangd.setup{
 }
 
 require("lspconfig").ruff_lsp.setup{}
+
 require("lspconfig").texlab.setup{}
 
 require("lspconfig").lua_ls.setup{
@@ -27,6 +28,7 @@ require("lspconfig").lua_ls.setup{
 }
 
 require("lspconfig").rust_analyzer.setup{}
+
 require("lspconfig").gopls.setup{}
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(

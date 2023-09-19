@@ -46,10 +46,26 @@ vim.api.nvim_exec2([[
 
 
 -- Spell checking only for relevant files
--- vim.opt.list = "true";
--- vim.opt.listchars = { space = '·', tab = '>' }
--- autocmd BufRead,BufNewFile *.tex,*.md,*.MD,*.txt setlocal listchars=space:·,tab:>
--- autocmd FileType tex,markdown setlocal spell
 vim.api.nvim_exec2([[
     autocmd BufRead,BufNewFile *.tex,*.md,*.MD,*.txt setlocal spell
 ]], {output = false})
+
+vim.cmd [[ autocmd FileType markdown,text,tex setlocal wrap ]]
+
+vim.g.mkdp_markdown_css = '$HOME/github-markdown-light.css'
+vim.g.mkdp_theme = 'light'
+vim.g.mkdp_preview_options = {
+  mkit = {},
+  katex = {},
+  uml = {},
+  maid = {},
+  disable_sync_scroll = 0,
+  sync_scroll_type = 'middle',
+  hide_yaml_meta = 1,
+  sequence_diagrams = {},
+  flowchart_diagrams = {},
+  content_editable = false,
+  disable_filename = true,
+  toc = {}
+}
+

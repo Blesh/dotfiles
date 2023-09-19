@@ -1,7 +1,7 @@
 local opts = { noremap = true, silent = true }
 
 -- Leader
-vim.keymap.set("", "<Space>", "<Nop>", opts)  -- do nothing in (most) modes, where to I have this from?
+vim.keymap.set("", "<Space>", "<Nop>", opts)  -- do nothing in (most) modes, where do I have this from?
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -46,10 +46,10 @@ vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 vim.keymap.set("v", "q", "<Esc>", opts)
 
--- tree
+-- NVIMTREE
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
--- harpoon
+-- HARPOON
 
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
@@ -68,7 +68,7 @@ vim.keymap.set("n", "<leader>7", function() ui.nav_file(7) end)
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>l", function() vim.api.nvim_list_wins() end)
 
--- telescope
+-- TELESCOPE
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', function()
@@ -109,7 +109,7 @@ vim.keymap.set('n', '<leader>shi', builtin.highlights, {}) -- maybe?
 vim.keymap.set('n', '<leader>str', builtin.treesitter, {}) -- maybe?
 vim.keymap.set('n', '<leader>sht', builtin.help_tags, {}) -- maybe?
 
--- lsp
+-- LSP
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -120,7 +120,7 @@ vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
 
--- trouble
+-- TROUBLE
 
 vim.keymap.set('n', '<leader>sd', '<cmd>TroubleToggle document_diagnostics<CR>', opts)
 vim.keymap.set('n', '<leader>sD', '<cmd>TroubleToggle workspace_diagnostics<CR>', opts)
@@ -135,7 +135,7 @@ local function dap_float_scope()
     if not DAP_UI_ENABLED then return end
     require('dapui').float_element 'scopes'
 end
--- dap
+-- DAP
 vim.keymap.set('n', '<leader>Dc', function() require('dap').continue() end)
 vim.keymap.set('n', '<C-b>', function() require('dap').toggle_breakpoint() end)
 vim.keymap.set('n', '<Right>', function() require('dap').step_into() end)
@@ -146,3 +146,4 @@ vim.keymap.set('n', '<leader>Dt', function() require('dap').terminate() end)
 vim.keymap.set('n', '<leader>Ds', function() dap_float_scope() end)
 vim.keymap.set('n', '<leader>Du', function() dap_toggle_ui() end)
 vim.keymap.set('n', '<leader>Dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
+
