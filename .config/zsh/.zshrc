@@ -5,9 +5,12 @@ _comp_options+=(globdots) # Tab complete includes dot files. 'setopt globdots' f
 
 export LANG=en_US.UTF-8 # Get rid of locale error, not sure what those values do
 
-#  Prompt http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Visual-effects
-# http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Character-Highlighting
-PS1='%B%F{15}%1/ %f%b% ' 
+autoload -Uz vcs_info
+zstyle ':vcs_info:git:*' formats " (%b)"
+zstyle ':vcs_info:git:*' actionformats " (%b|%a)"
+precmd() { vcs_info }
+setopt PROMPT_SUBST
+PS1='%B%F{15}%1/ %f%b%${vcs_info_msg_0_}${vcs_info_msg_0_:+ }'
 
 alias vf='vim $(fzf)'
 alias ll="ls -lah"
