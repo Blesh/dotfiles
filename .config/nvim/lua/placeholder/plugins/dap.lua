@@ -41,7 +41,7 @@ require('dapui').setup({
         {
             elements = {
                 {
-                    id = 'stacks',
+                    id = 'scopes',
                     size = 0.30,
                 },
                 {
@@ -49,7 +49,7 @@ require('dapui').setup({
                     size = 0.40,
                 },
                 {
-                    id = 'console',
+                    id = 'stacks',
                     size = 0.30,
                 },
             },
