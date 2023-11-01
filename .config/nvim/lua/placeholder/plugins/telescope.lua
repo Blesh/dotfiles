@@ -9,7 +9,6 @@ require('telescope').setup{
     layout_strategy = "vertical",
     mappings = {
       i = {
-        ["<C-q>"] = actions.close,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
         ["<Tab>"] = actions.move_selection_next,
@@ -17,18 +16,9 @@ require('telescope').setup{
 
         ["<C-u>"] = actions.preview_scrolling_up,
         ["<C-d>"] = actions.preview_scrolling_down,
-
-        --["<C-u>"] = actions.results_scrolling_up,
-        --["<C-d>"] = actions.results_scrolling_down,
-
-        ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
       },
 
       n = {
-        ["<C-q>"] = actions.close,
-
-        ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-
         ["j"] = actions.move_selection_next,
         ["k"] = actions.move_selection_previous,
         ["<Tab>"] = actions.move_selection_next,
@@ -42,9 +32,6 @@ require('telescope').setup{
 
         ["<C-u>"] = actions.preview_scrolling_up,
         ["<C-d>"] = actions.preview_scrolling_down,
-
-        --["<C-u>"] = actions.results_scrolling_up,
-        --["<C-d>"] = actions.results_scrolling_down,
       },
     },
   },

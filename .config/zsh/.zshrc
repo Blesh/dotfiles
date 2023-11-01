@@ -23,8 +23,8 @@ eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolo
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
 zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
 
+# vi key bindings
 bindkey -v # http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets
-
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
@@ -33,8 +33,9 @@ bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 
 export KEYTIMEOUT=20 # Set to shortest possible delay is 1/100 second. Not quite sure how and why this works, but removes the delay for mode switch
-#export PATH="$PATH:/Library/PostgreSQL/13/bin/"
 export PATH="/usr/local/sbin:$PATH"
+
+# xdg specification
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -45,10 +46,23 @@ export CC="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
 export CXX="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
 export PATH=/usr/local/Cellar/llvm/16.0.4/bin:$PATH
 
-export PATH="/Users/meinz/go/bin:$PATH"
+# fzf config
+export FZF_DEFAULT_OPTS="--height 25% --layout=reverse --border=none --no-scrollbar --color='bg:0,gutter:0,bg+:0,info:4,spinner:4' \
+                        --color='hl:10,hl+:10,fg:15,header:7,fg+:15' \
+                        --color='pointer:3,marker:3,prompt:3,hl+:108'"
+
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PATH="$HOME/go/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 export PSQL_EDITOR=/usr/local/bin/nvim
+
+# homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# zsh extensions
 source /usr/local/Cellar/zsh-syntax-highlighting/0.7.1/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # Syntax-highlighting prompt line
-# set strategy=(completion history)
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+

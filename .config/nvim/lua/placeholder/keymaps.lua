@@ -66,11 +66,27 @@ vim.keymap.set("n", "<leader>6", function() ui.nav_file(6) end)
 vim.keymap.set("n", "<leader>7", function() ui.nav_file(7) end)
 
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-vim.keymap.set("n", "<leader>l", function() vim.api.nvim_list_wins() end)
+--vim.keymap.set("n", "<leader>l", function() vim.api.nvim_list_wins() end)
 
 -- TELESCOPE
 
 local builtin = require('telescope.builtin')
+
+-- change config
+vim.keymap.set('n', '<leader>cc', function()
+  builtin.find_files(require('telescope.themes').get_dropdown{
+    cwd = "~/dotfiles/.config/nvim",
+    layout_strategy = "center",
+    layout_config = {
+      width = 0.5,
+      height = 0.4,
+      prompt_position = "top"
+    },
+    previewer = false,
+    prompt_title = false,
+  })
+end, {})
+
 vim.keymap.set('n', '<leader>f', function()
   builtin.find_files(require('telescope.themes').get_dropdown{
     layout_strategy = "center",
@@ -100,25 +116,30 @@ vim.keymap.set('n', '<leader>/', function()
 end, {})
 
 vim.keymap.set('n', '<leader>p', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>ci', builtin.lsp_incoming_calls, {})
-vim.keymap.set('n', '<leader>co', builtin.lsp_outgoing_calls, {})
+vim.keymap.set('n', '<leader>sic', builtin.lsp_incoming_calls, {})
+vim.keymap.set('n', '<leader>soc', builtin.lsp_outgoing_calls, {})
 -- might no longer need trouble plugin using this
 vim.keymap.set('n', '<leader>sd', builtin.diagnostics, {})
 vim.keymap.set('n', '<leader>sgc', builtin.git_commits, {}) -- maybe?
 vim.keymap.set('n', '<leader>shi', builtin.highlights, {}) -- maybe?
 vim.keymap.set('n', '<leader>str', builtin.treesitter, {}) -- maybe?
 vim.keymap.set('n', '<leader>sht', builtin.help_tags, {}) -- maybe?
+vim.keymap.set('n', '<leader>sr', builtin.lsp_references, {}) -- maybe?
+vim.keymap.set('n', '<leader>sd', builtin.lsp_definitions, {}) -- maybe?
 
 -- LSP
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
 vim.keymap.set('n', '<leader>w', vim.lsp.buf.hover, opts)
-vim.keymap.set('n', 'gR', vim.lsp.buf.references, opts)
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+-- vim.keymap.set('n', 'gR', vim.lsp.buf.references, opts)
+vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, opts)
+vim.keymap.set('n', '<leader>ls', vim.lsp.buf.signature_help, opts)
 vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, opts)
 
 -- TROUBLE
 
@@ -147,3 +168,15 @@ vim.keymap.set('n', '<leader>Ds', function() dap_float_scope() end)
 vim.keymap.set('n', '<leader>Du', function() dap_toggle_ui() end)
 vim.keymap.set('n', '<leader>Dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
 
+-- FUGITIVE and GITSIGNS
+
+vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+vim.keymap.set("n", "<leader>gv", '<cmd>Gitsigns diffthis<CR>', opts)
+vim.keymap.set("n", "<leader>ph", '<cmd>Gitsigns preview_hunk<CR>', opts)
+vim.keymap.set("n", "<leader>nh", '<cmd>Gitsigns next_hunk<CR>', opts)
+vim.keymap.set("n", "<leader>sh", '<cmd>Gitsigns stage_hunk<CR>', opts)
+vim.keymap.set("n", "<leader>uh", '<cmd>Gitsigns undo_stage_hunk<CR>', opts)
+
+-- merge conflict take left and right
+vim.keymap.set("n", "<leader>gh", "<cmd>diffget //2<CR>")
+vim.keymap.set("n", "<leader>gl", "<cmd>diffget //3<CR>")

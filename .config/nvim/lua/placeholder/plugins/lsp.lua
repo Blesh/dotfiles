@@ -8,8 +8,8 @@ require("lspconfig").clangd.setup{
     cmd = { "clangd", "--header-insertion-decorators=false" },
 }
 
-require("lspconfig").ruff_lsp.setup{}
-
+--require("lspconfig").ruff_lsp.setup{}
+require'lspconfig'.pyright.setup{}
 require("lspconfig").texlab.setup{}
 
 require("lspconfig").lua_ls.setup{
