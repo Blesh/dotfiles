@@ -17,8 +17,8 @@ alias ll="ls -lah"
 alias pip="pip3"
 alias vim="nvim"
 alias python="python3"
-alias ls="\\gls --color=always -G" # BDS ls not working with LS_Colors
-eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
+# alias ls="\\gls --color=always -G" # BDS ls not working with LS_Colors
+# eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
 
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
 zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
@@ -33,7 +33,8 @@ bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 
 export KEYTIMEOUT=20 # Set to shortest possible delay is 1/100 second. Not quite sure how and why this works, but removes the delay for mode switch
-export PATH="/usr/local/sbin:$PATH"
+# macOS
+# export PATH="/usr/local/sbin:$PATH"
 
 # xdg specification
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -41,10 +42,6 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# cpp config
-export CC="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
-export CXX="/usr/local/Cellar/llvm/16.0.4/bin/clang-16"
-export PATH=/usr/local/Cellar/llvm/16.0.4/bin:$PATH
 
 # fzf config
 export FZF_DEFAULT_OPTS="--height 25% --layout=reverse --border=none --no-scrollbar --color='bg:0,gutter:0,bg+:0,info:4,spinner:4' \
@@ -57,12 +54,16 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export PATH="$HOME/go/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PSQL_EDITOR=/usr/local/bin/nvim
+# macOS
+# export PSQL_EDITOR=/usr/local/bin/nvim
+export PSQL_EDITOR=/usr/bin/nvim
+
 
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # zsh extensions
-source /usr/local/Cellar/zsh-syntax-highlighting/0.7.1/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # Syntax-highlighting prompt line
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# macOS 
+# source /usr/local/Cellar/zsh-syntax-highlighting/0.7.1/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # Syntax-highlighting prompt line
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
