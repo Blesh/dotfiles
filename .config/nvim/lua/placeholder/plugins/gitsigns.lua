@@ -25,6 +25,6 @@ require('gitsigns').setup {
       vim.keymap.set(mode, l, r, opts)
     end
     map('n', '<leader>gb', function() gs.blame_line{full=false} end)
-    map('n', '<leader>gd', function() gs.diffthis('@~'..vim.fn.nr2char(vim.fn.getchar())) end)
+    -- map('n', '<leader>gd', function() gs.diffthis('@~'..vim.fn.nr2char(vim.fn.getchar())) end)
   end
 }

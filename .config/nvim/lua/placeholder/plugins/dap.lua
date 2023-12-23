@@ -1,9 +1,9 @@
 local dap = require('dap')
 
 dap.adapters.lldb = {
+    name = 'lldb',
     type = 'executable',
-    command = '/usr/local/Cellar/llvm/16.0.4/bin/lldb-vscode';
-    name = 'lldb'
+	command = '/usr/local/Cellar/llvm/16.0.4/bin/lldb-vscode'
 }
 
 -- NOTE do not foget to compile with -g for debug symbols
@@ -45,12 +45,12 @@ require('dapui').setup({
                     size = 0.30,
                 },
                 {
-                    id = 'watches',
-                    size = 0.40,
-                },
-                {
                     id = 'stacks',
                     size = 0.30,
+                },
+                {
+                    id = 'watches',
+                    size = 0.40,
                 },
             },
             size = 0.3,
@@ -65,29 +65,5 @@ require('dapui').setup({
             position = 'bottom',
         },
     },
---  layouts = { {
---     elements = { {
---         id = "scopes",
---         size = 0.3
---       }, {
---         id = "stacks",
---         size = 0.3
---       }, {
---         id = "watches",
---         size = 0.4
---       } },
---     size = 0.35,
---     position = "left",
---    }, {
---      elements = { {
---          id = "repl",
---          size = 0.5
---        }, {
---          id = "console",
---          size = 0.5
---        } },
---      position = "bottom",
---      size = 0.15,
---    } },
 })
 

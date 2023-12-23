@@ -16,7 +16,7 @@ local function root_label(path)
     return path
 end
 
-require'nvim-tree'.setup { 
+require'nvim-tree'.setup {
   sort_by = "name",
   hijack_cursor = true,
   view = {

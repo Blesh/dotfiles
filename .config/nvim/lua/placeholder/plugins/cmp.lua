@@ -47,21 +47,24 @@ cmp.setup({
           -- choose an element in the list
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
           -- iterate through the items with tab
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                 cmp.select_next_item()
-            else
-                 fallback()
-            end
-          end, {"i", "s"}),
-          -- iterate back up with shift tab
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                 cmp.select_prev_item()
-            else
-                 fallback()
-            end
-          end, {"i", "s"}),
+          --["<Tab>"] = cmp.mapping(function(fallback)
+          --  if cmp.visible() then
+          --       cmp.select_next_item()
+          --  else
+          --       fallback()
+          --  end
+          --end, {"i", "s"}),
+          ---- iterate back up with shift tab
+          --["<S-Tab>"] = cmp.mapping(function(fallback)
+          --  if cmp.visible() then
+          --       cmp.select_prev_item()
+          --  else
+          --       fallback()
+          --  end
+          --end, {"i", "s"}),
+		  ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+		  ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
+		  ['<C-o>'] = cmp.mapping(cmp.mapping.complete(), {'i','c'})
      },
      formatting = {
           fields = {"kind", "abbr", "menu"},

@@ -44,6 +44,15 @@ vim.api.nvim_exec2([[
   autocmd BufRead,BufNewFile *.tpp setfiletype cpp
 ]], {output = false})
 
+vim.opt.fillchars = {
+    horiz = '-',
+    horizdown = '-',
+    horizup = '-',
+    vert = '|',
+    vertleft = '|',
+    vertright = '|',
+    verthoriz = '|',
+}
 
 -- Spell checking only for relevant files
 vim.api.nvim_exec2([[
