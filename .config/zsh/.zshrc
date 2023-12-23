@@ -17,11 +17,7 @@ alias ll="ls -lah"
 alias pip="pip3"
 alias vim="nvim"
 alias python="python3"
-# alias ls="\\gls --color=always -G" # BDS ls not working with LS_Colors
-# eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
 
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
-zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
 
 # vi key bindings
 bindkey -v # http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets
@@ -33,8 +29,6 @@ bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 
 export KEYTIMEOUT=20 # Set to shortest possible delay is 1/100 second. Not quite sure how and why this works, but removes the delay for mode switch
-# macOS
-# export PATH="/usr/local/sbin:$PATH"
 
 # xdg specification
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -52,18 +46,24 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export PATH="$HOME/go/bin:$PATH"
+
+## TODO Determine proper way to do this on macOS
+# source /usr/share/doc/fzf/examples/completion.zsh
+# source /usr/share/doc/fzf/examples/key-bindings.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# macOS
-# export PSQL_EDITOR=/usr/local/bin/nvim
 export PSQL_EDITOR=/usr/bin/nvim
 
+#### macOS specific
+alias ls="\\gls --color=always -G" # BDS ls not working with LS_Colors
+eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
+zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
 
-# homebrew
+export PSQL_EDITOR=/usr/local/bin/nvim
+## zsh extensions
+source /usr/local/Cellar/zsh-syntax-highlighting/0.7.1/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # Syntax-highlighting prompt line
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+## homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
-
-# zsh extensions
-# macOS 
-# source /usr/local/Cellar/zsh-syntax-highlighting/0.7.1/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # Syntax-highlighting prompt line
-# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
+export PATH="/usr/local/sbin:$PATH"
