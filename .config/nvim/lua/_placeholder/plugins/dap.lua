@@ -65,29 +65,5 @@ require('dapui').setup({
             position = 'bottom',
         },
     },
---  layouts = { {
---     elements = { {
---         id = "scopes",
---         size = 0.3
---       }, {
---         id = "stacks",
---         size = 0.3
---       }, {
---         id = "watches",
---         size = 0.4
---       } },
---     size = 0.35,
---     position = "left",
---    }, {
---      elements = { {
---          id = "repl",
---          size = 0.5
---        }, {
---          id = "console",
---          size = 0.5
---        } },
---      position = "bottom",
---      size = 0.15,
---    } },
 })
 
