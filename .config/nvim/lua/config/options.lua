@@ -32,6 +32,16 @@ vim.opt.smartindent = true
 vim.opt.guicursor = "i:block"
 vim.opt.spelllang = 'en_us'
 
+vim.opt.fillchars = {
+    horiz = '-',
+    horizdown = '-',
+    horizup = '-',
+    vert = '|',
+    vertleft = '|',
+    vertright = '|',
+    verthoriz = '|',
+}
+
 vim.cmd [[set iskeyword+=-,_]]
 vim.g.mkdp_markdown_css = '$HOME/github-markdown-light.css'
 vim.g.mkdp_theme = 'light'

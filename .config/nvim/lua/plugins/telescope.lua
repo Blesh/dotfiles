@@ -115,7 +115,7 @@ return {
           })
         end, {})
 
-        vim.keymap.set('n', '<leader>p', builtin.live_grep, {})
+        vim.keymap.set('n', '<leader>sp', builtin.live_grep, {})
         vim.keymap.set('n', '<leader>sic', builtin.lsp_incoming_calls, {})
         vim.keymap.set('n', '<leader>soc', builtin.lsp_outgoing_calls, {})
         -- might no longer need trouble plugin using this

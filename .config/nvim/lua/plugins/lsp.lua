@@ -7,7 +7,9 @@ return {
         },
         config = function()
             require('mason').setup()
-            require('mason-lspconfig').setup()
+            require('mason-lspconfig').setup({
+                ensure_installed = { "rust_analyzer", "clangd", "lua_ls", "gopls", "texlab", "pyright" }
+            })
             require("lspconfig").clangd.setup{
                 filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "tpp", "cc" },
                 -- https://github.com/hrsh7th/nvim-cmp/issues/999

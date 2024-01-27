@@ -1,1 +1,0 @@
-require('meinz-scheme').setup()

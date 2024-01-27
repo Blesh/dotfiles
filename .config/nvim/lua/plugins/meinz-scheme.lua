@@ -4,6 +4,6 @@ return {
     priority = 1000,
     config = function()
       require('meinz-scheme').setup()
-      -- vim.cmd([[colorscheme meinz-scheme]])
+      vim.cmd([[colorscheme meinz-scheme]])
     end,
 }
