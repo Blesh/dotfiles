@@ -13,7 +13,6 @@ return {
             build = "make install_jsregexp"
         },
     },
-    -- cmp = require'cmp',
     config = function()
         local cmp_icons = {
             Text = '',

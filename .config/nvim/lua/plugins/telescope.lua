@@ -1,5 +1,3 @@
--- require('telescope').load_extension('fzf')
--- require('telescope').setup{
 return {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.5',
@@ -67,8 +65,6 @@ return {
               },
           },
         }
-
-        -- TELESCOPE
 
         local builtin = require('telescope.builtin')
 
