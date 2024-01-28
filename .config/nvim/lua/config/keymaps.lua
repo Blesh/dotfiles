@@ -1,5 +1,10 @@
 local opts = { noremap = true, silent = true }
 
+-- Leader
+vim.keymap.set("", "<Space>", "<Nop>", { noremap = true, silent = true })  -- do nothing in (most) modes, where do I have this from?
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 --vertical split
 vim.keymap.set("n", "<leader>v", ":vs<CR>", opts)
 
