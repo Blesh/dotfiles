@@ -44,6 +44,10 @@ vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 vim.keymap.set("v", "q", "<Esc>", opts)
 
+-- New tmux session
+
+vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
+
 
 
 -- FUGITIVE and GITSIGNS

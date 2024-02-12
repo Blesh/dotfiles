@@ -31,6 +31,8 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 
+bindkey -s ^f "primux_sessionizer\n"
+
 export KEYTIMEOUT=20 # Set to shortest possible delay is 1/100 second. Not quite sure how and why this works, but removes the delay for mode switch
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -42,6 +44,7 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/dotfiles/.local/bin:$PATH
 
 export PATH=/usr/lib/llvm-13/bin/:$PATH
 export NVM_DIR="$HOME/.config/nvm"
@@ -70,7 +73,7 @@ export CC=/usr/lib/llvm-13/bin/clang
 
 ulimit -n 4096
 
-export JAVA_HOME="$HOME/jre1.8.0_391"
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
 alias hwsim=$HOME/nand2tetris/tools/HardwareSimulator.sh

@@ -60,6 +60,7 @@ return {
                     '--hidden',
                     '--exclude',
                     '.git',
+                    "--strip-cwd-prefix",
                   },
               prompt_title = false,
               },
