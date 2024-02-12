@@ -2,14 +2,24 @@
 # see https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
 # everything inside $() is executed and std returned
-session=$(fd --min-depth 1 --max-depth 1 --type d '' ~ ~/mine ~/dev | fzf)
+session=$(fd --min-depth 1 --max-depth 1 --type d '' ~ ~/mine ~/dev ~/repos | fzf)
+
+if [[ -z $session ]]; then
+    exit 0
+fi
 
 # contains only the final folder name in the path
 session_name=$(basename "$session" | tr . _)
+tmux_running=$(pgrep tmux)
 
-if ! tmux has-session -t "$session_name" 2> /dev/null; then
-    tmux new-session -s "$session_name" -c "$session" -d
+# -z returns true if the length of the string is 0
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $session_name -c $session
+    exit 0
 fi
 
-tmux switch-client -t "$session_name"
+if ! tmux has-session -t=$session_name 2> /dev/null; then
+    tmux new-session -ds $session_name -c $session
+fi
 
+tmux switch-client -t $session_name
