@@ -48,6 +48,10 @@ vim.keymap.set("v", "q", "<Esc>", opts)
 
 vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
 
+-- Yank position
+-- :vmap y ygv<Esc>
+vim.keymap.set("v", "y", "ygv<Esc>", opts)
+
 
 
 -- FUGITIVE and GITSIGNS

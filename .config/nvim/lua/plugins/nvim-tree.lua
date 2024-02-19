@@ -33,6 +33,9 @@ return {
             cursorline = false,
             signcolumn = 'no',
           },
+          filters = {
+                git_ignored = false,
+          },
           renderer = {
             root_folder_label = root_label,
             indent_markers = {

@@ -12,7 +12,7 @@ return {
 
             dap.adapters.lldb = {
                 type = 'executable',
-                command = '/usr/local/Cellar/llvm/16.0.4/bin/lldb-vscode';
+                command = '/usr/lib/llvm-13/bin/lldb-vscode';
                 name = 'lldb'
             }
 

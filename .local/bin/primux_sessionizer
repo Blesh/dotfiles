@@ -19,6 +19,10 @@ if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
 fi
 
 if ! tmux has-session -t=$session_name 2> /dev/null; then
+    if [[ -z $TMUX ]]; then
+        tmux new-session -s $session_name -c $session
+        exit 0
+    fi
     tmux new-session -ds $session_name -c $session
 fi
 

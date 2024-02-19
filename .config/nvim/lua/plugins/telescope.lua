@@ -60,7 +60,16 @@ return {
                     '--hidden',
                     '--exclude',
                     '.git',
+                    '--exclude',
+                    '.node_modules',
+                    '--exclude',
+                    '.venv',
+                    '--exclude',
+                    'cmake-build-debug',
+                    '--exclude',
+                    'cmake-build-release',
                     "--strip-cwd-prefix",
+                    "--no-ignore",
                   },
               prompt_title = false,
               },
@@ -111,6 +120,7 @@ return {
             prompt_title = false,
           })
         end, {})
+        vim.keymap.set('n', '<leader>sw', builtin.grep_string, {})
 
         vim.keymap.set('n', '<leader>sp', builtin.live_grep, {})
         vim.keymap.set('n', '<leader>sic', builtin.lsp_incoming_calls, {})
