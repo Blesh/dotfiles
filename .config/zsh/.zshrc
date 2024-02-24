@@ -23,6 +23,9 @@ eval $(gdircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolo
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
 zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
 
+# tmux sessionizer
+export PATH="$HOME/dotfiles/.local/bin:$PATH"
+
 # vi key bindings
 bindkey -v # http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets
 bindkey -M menuselect 'h' vi-backward-char
@@ -32,6 +35,9 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 
+# For some reason putting this before the vi key bindings makes it not work unless we
+# source .zshrc every time
+bindkey -s ^f "primux_sessionizer\n" 
 export KEYTIMEOUT=20 # Set to shortest possible delay is 1/100 second. Not quite sure how and why this works, but removes the delay for mode switch
 export PATH="/usr/local/sbin:$PATH"
 

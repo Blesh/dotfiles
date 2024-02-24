@@ -11,6 +11,13 @@ vim.keymap.set("n", "<leader>v", ":vs<CR>", opts)
 -- yank into register to avoid overwriting with deleted text at destination
 vim.keymap.set("n", "<leader>y", "\"0p", opts)
 
+-- New tmux session
+vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
+
+-- Yank position
+-- :vmap y ygv<Esc>
+vim.keymap.set("v", "y", "ygv<Esc>", opts)
+
 -- keymap("n", "<leader>;", ":buffers<CR>", opts)
 
 -- prev buffer

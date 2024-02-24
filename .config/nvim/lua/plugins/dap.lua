@@ -23,6 +23,7 @@ return {
                     type = 'lldb',
                     request = 'launch', -- debug adapter should start dubger
                     program = function()
+                        -- vim.fn.getcwd returns directory of window calling the function
                         return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
                     end,
                     cwd = '${workspaceFolder}', -- current working directory of Neovim
