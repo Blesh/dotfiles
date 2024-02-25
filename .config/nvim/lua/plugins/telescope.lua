@@ -18,6 +18,7 @@ return {
           defaults = {
             -- Default configuration for telescope goes here:
             -- config_key = value,
+            path_display = "truncate",
             prompt_prefix = '   ',
             selection_caret = '  ',
             layout_strategy = "vertical",
@@ -61,7 +62,6 @@ return {
                     '--exclude',
                     '.git',
                     "--strip-cwd-prefix",
-                    "--no-ignore",
                   },
               prompt_title = false,
               },
@@ -85,7 +85,7 @@ return {
           })
         end, {})
 
-        vim.keymap.set('n', '<leader>af', function()
+        vim.keymap.set('n', '<leader>f', function()
           builtin.find_files(require('telescope.themes').get_dropdown{
             layout_strategy = "center",
             layout_config = {
@@ -98,7 +98,7 @@ return {
           })
         end, {})
 
-        vim.keymap.set('n', '<leader>f', function()
+        vim.keymap.set('n', '<leader>gf', function()
           builtin.git_files(require('telescope.themes').get_dropdown{
             previewer = false,
             prompt_title = false,
