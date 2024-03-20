@@ -11,8 +11,6 @@ vim.keymap.set("n", "<leader>v", ":vs<CR>", opts)
 -- yank into register to avoid overwriting with deleted text at destination
 vim.keymap.set("n", "<leader>y", "\"0p", opts)
 
--- keymap("n", "<leader>;", ":buffers<CR>", opts)
-
 -- prev buffer
 vim.keymap.set("n", "<leader><leader>", "<c-^>", opts)
 
@@ -29,12 +27,14 @@ vim.keymap.set("n", "n", "nzzzv", opts)
 vim.keymap.set("n", "N", "Nzzzv", opts)
 
 vim.keymap.set("n", "Q", "<nop>", opts)
-
--- Resize
-vim.keymap.set("n", "<C-w>j", ":resize +4<CR>", opts)
-vim.keymap.set("n", "<C-w>k", ":resize -4<CR>", opts)
-vim.keymap.set("n", "<C-w>h", ":resize -4<CR>", opts)
-vim.keymap.set("n", "<C-w>l", ":resize +4<CR>", opts)
+-- make j and k move by visual line, not actual line, when text is soft-wrapped
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
+-- Resize Those are not really convenient for now
+-- vim.keymap.set("n", "<C-w>j", ":resize +4<CR>", opts)
+-- vim.keymap.set("n", "<C-w>k", ":resize -4<CR>", opts)
+-- vim.keymap.set("n", "<C-w>h", ":resize -4<CR>", opts)
+-- vim.keymap.set("n", "<C-w>l", ":resize +4<CR>", opts)
 
 -- ESC
 vim.keymap.set("i", "jj", "<Esc>", opts)
@@ -45,14 +45,16 @@ vim.keymap.set("v", ">", ">gv", opts)
 vim.keymap.set("v", "q", "<Esc>", opts)
 
 -- New tmux session
-
 vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
 
 -- Yank position
 -- :vmap y ygv<Esc>
 vim.keymap.set("v", "y", "ygv<Esc>", opts)
 
-
+-- Jump to start and end of line using the home row keys
+-- https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.lua
+vim.keymap.set('', 'H', '^')
+vim.keymap.set('', 'L', '$')
 
 -- FUGITIVE and GITSIGNS
 

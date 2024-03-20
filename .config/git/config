@@ -1,0 +1,20 @@
+[core]
+    editor = nvim
+
+[merge]
+    tool = nvim -d
+
+[rerere]
+    enabled = true
+
+[branch]
+    sort = -committerdate
+
+[maintenance]
+    auto = false
+    strategy = incremental
+
+[rebase]
+    updateRefs = true
+[alias]
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative

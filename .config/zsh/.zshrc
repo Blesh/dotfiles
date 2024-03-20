@@ -73,7 +73,7 @@ export CC=/usr/lib/llvm-13/bin/clang
 
 ulimit -n 4096
 
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
 alias hwsim=$HOME/nand2tetris/tools/HardwareSimulator.sh

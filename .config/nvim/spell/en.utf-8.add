@@ -248,3 +248,12 @@ RTLS
 UWB
 RFID
 Pimpl
+KafkaConsumer
+macOS
+POSIX
+XPG4
+SUSv3
+SUSv2
+SUS
+init
+KafkaPartitioningConsumerService
