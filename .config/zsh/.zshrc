@@ -8,7 +8,7 @@ export LANG=en_US.UTF-8 # Get rid of locale error, not sure what those values do
 autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats " (%b)"
 zstyle ':vcs_info:git:*' actionformats " (%b|%a)"
-precmd() { vcs_info }
+precmd() { vcs_info 2> /dev/null }
 setopt PROMPT_SUBST
 PS1='%B%F{15}%1/ %f%b%${vcs_info_msg_0_}${vcs_info_msg_0_:+ }'
 

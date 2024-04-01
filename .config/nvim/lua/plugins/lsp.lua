@@ -34,6 +34,7 @@ return {
                     -- cmd = { "clangd", "--header-insertion-decorators=false", "--clang-tidy" },
                     cmd = { "clangd", "--header-insertion-decorators=false" },
                 },
+                zls = {},
                 pyright = {},
                 texlab = {},
                 jdtls = {},
@@ -100,7 +101,14 @@ return {
         doc_lines = 0,
         max_width = 100,
       },
-      config = function(_, opts) require'lsp_signature'.setup(opts) end
+      config = function(_, opts)
+            require'lsp_signature'.setup(opts)
+            vim.keymap.set({ 'i' }, '<C-k>',
+                function()
+                    require('lsp_signature').toggle_float_win()
+                end,
+            { silent = true, noremap = true, desc = 'toggle signature' })
+    end
     }
 }
 
