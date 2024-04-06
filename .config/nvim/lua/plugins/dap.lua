@@ -36,14 +36,14 @@ return {
             dap.configurations.c = dap.configurations.cpp
 
             -- DAP
-            vim.keymap.set('n', '<leader>Dc', function() require('dap').continue() end)
+            vim.keymap.set('n', '<leader>dc', function() require('dap').continue() end)
             vim.keymap.set('n', '<C-b>', function() require('dap').toggle_breakpoint() end)
             vim.keymap.set('n', '<Right>', function() require('dap').step_into() end)
             vim.keymap.set('n', '<Down>', function() require('dap').step_over() end)
             vim.keymap.set('n', '<Left>', function() require('dap').step_out() end)
             vim.keymap.set('n', '<Up>', function() require('dap').restart_frame() end)
-            vim.keymap.set('n', '<leader>Dt', function() require('dap').terminate() end)
-            vim.keymap.set('n', '<leader>Dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
+            vim.keymap.set('n', '<leader>dt', function() require('dap').terminate() end)
+            vim.keymap.set('n', '<leader>dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
         end
     },
     "leoluz/nvim-dap-go",
@@ -98,8 +98,8 @@ return {
                 if not DAP_UI_ENABLED then return end
                 require('dapui').float_element 'scopes'
             end
-            vim.keymap.set('n', '<leader>Ds', function() dap_float_scope() end)
-            vim.keymap.set('n', '<leader>Du', function() dap_toggle_ui() end)
+            vim.keymap.set('n', '<leader>ds', function() dap_float_scope() end)
+            vim.keymap.set('n', '<leader>du', function() dap_toggle_ui() end)
         end,
     }
 }
