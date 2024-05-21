@@ -50,12 +50,13 @@ vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
 -- Yank position
 -- :vmap y ygv<Esc>
 vim.keymap.set("v", "y", "ygv<Esc>", opts)
-
 -- Jump to start and end of line using the home row keys
 -- https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.lua
 vim.keymap.set('', 'H', '^')
 vim.keymap.set('', 'L', '$')
 
+vim.keymap.set("n", "<leader>cn", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<leader>cp", "<cmd>cprev<CR>zz")
 -- FUGITIVE and GITSIGNS
 
 --vim.keymap.set("n", "<leader>gs", vim.cmd.Git)

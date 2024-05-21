@@ -1,5 +1,9 @@
 -- :help options
 
+-- vim.opt.foldtext = ''
+-- vim.opt.fillchars = 'fold: '
+-- manually set to false as otherwise meinz-scheme breaks since 0.10
+vim.opt.termguicolors = false
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus"
 vim.opt.fileencoding = "utf-8"

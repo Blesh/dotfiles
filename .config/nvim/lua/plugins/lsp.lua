@@ -48,7 +48,9 @@ return {
                     -- avoid luv prompt https://github.com/LuaLS/lua-language-server/issues/783  
                     workspace = { checkThirdParty = false, },
                 },
-                rust_analyze = {},
+                rust_analyzer = {
+                    cargo = { allFeatures = true, },
+                },
                 gopls = {},
             }
             require('mason').setup()

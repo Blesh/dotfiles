@@ -1,5 +1,9 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  event = { "BufReadPre", "BufNewFile" },
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
   config = function()
       require'nvim-treesitter.configs'.setup {
         ensure_installed = "all",
@@ -14,27 +18,6 @@ return {
             --scope_incremental = '<c-s>',
             node_decremental = '<c-s>',
           },
-        },
-        textobjects = {
-            select = {
-              enable = true,
-              lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-              keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ['af'] = '@function.outer',
-                ['if'] = '@function.inner',
-              },
-            },
-            move = {
-              enable = true,
-              set_jumps = true, -- whether to set jumps in the jumplist
-              goto_next_start = {
-                ['[m'] = '@function.outer',
-              },
-              goto_previous_start = {
-                [']m'] = '@function.outer',
-              },
-            },
         },
         -- List of parsers to ignore installing (for "all")
         ignore_install = { "" },

@@ -1,7 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    tag = '0.1.x',
     dependencies = {
         'nvim-lua/plenary.nvim',
         {
@@ -16,6 +15,7 @@ return {
 
     config = function()
         local actions = require "telescope.actions"
+        local trouble = require("trouble.providers.telescope")
         require('telescope').setup{
           defaults = {
             -- Default configuration for telescope goes here:
@@ -34,10 +34,12 @@ return {
 
                 ["gg"] = actions.move_to_top,
                 ["G"] = actions.move_to_bottom,
+                ["<C-t>"] = trouble.open_with_trouble,
 
                 ["<C-u>"] = actions.preview_scrolling_up,
                 ["<C-d>"] = actions.preview_scrolling_down,
               },
+              i = { ["<C-t>"] = trouble.open_with_trouble },
             },
           },
           pickers = {
