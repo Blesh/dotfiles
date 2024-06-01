@@ -1,5 +1,6 @@
 return {
     "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
     config = function()
         local git_char = '▍'
         require('gitsigns').setup {
@@ -32,10 +33,10 @@ return {
         }
         local opts = { noremap = true, silent = true }
 
-        vim.keymap.set("n", "<leader>gv", '<cmd>Gitsigns diffthis<CR>', opts)
+        vim.keymap.set("n", "<leader>gd", '<cmd>Gitsigns diffthis<CR>', opts)
         vim.keymap.set("n", "<leader>ph", '<cmd>Gitsigns preview_hunk<CR>', opts)
-        vim.keymap.set("n", "<leader>nh", '<cmd>Gitsigns next_hunk<CR>', opts)
         vim.keymap.set("n", "<leader>sh", '<cmd>Gitsigns stage_hunk<CR>', opts)
+        vim.keymap.set("n", "<leader>nh", '<cmd>Gitsigns next_hunk<CR>', opts)
         vim.keymap.set("n", "<leader>uh", '<cmd>Gitsigns undo_stage_hunk<CR>', opts)
     end
 }

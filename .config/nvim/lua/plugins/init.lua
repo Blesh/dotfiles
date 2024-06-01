@@ -27,12 +27,14 @@ return {
     },
     {
         "mbbill/undotree",
+        event = "VeryLazy",
         config = function()
             vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
         end
     },
     {
         "folke/zen-mode.nvim",
+        event = "VeryLazy",
         opts = {
             window = {
                 width = .70,
@@ -43,8 +45,22 @@ return {
     {
         'echasnovski/mini.surround',
         version = '*',
+        event = "VeryLazy",
         config = function()
             require('mini.surround').setup()
         end
+    },
+    {
+      "michaelrommel/nvim-silicon",
+      cmd = "Silicon",
+      main = "nvim-silicon",
+      event = "VeryLazy",
+      opts = {
+        no_window_controls = true,
+        output = function()
+          return "/home/onurcakmak/code_snaps/" .. os.date("!%Y-%m-%dT%H-%M-%SZ") .. "_code.png"
+        end,
+        background_image = "/home/onurcakmak/code_snaps/background.jpg",
+      }
     },
 }

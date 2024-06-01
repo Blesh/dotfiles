@@ -1,13 +1,42 @@
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󱤅',
+    },
+    linehl = {
+      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+        },
+    numhl = {
+        [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+        [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+        [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+        [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+    },
+  },
+})
+
 return {
     "folke/trouble.nvim",
-
+    event = "VeryLazy",
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>sD",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>sd",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+    },
     config = function()
         require('trouble').setup({
-            icons = false,
-            padding = false,
             symbols = { error = ' ', warning = ' ', information = ' ', hint = '󱤅 ', other = '󰠠 ' },
         })
-        vim.keymap.set('n', '<leader>sd', '<cmd>TroubleToggle document_diagnostics<CR>', { noremap = true, silent = true })
-        vim.keymap.set('n', '<leader>sD', '<cmd>TroubleToggle workspace_diagnostics<CR>', { noremap = true, silent = true })
     end,
 }

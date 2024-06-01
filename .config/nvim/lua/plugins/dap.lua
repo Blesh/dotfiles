@@ -1,106 +1,228 @@
+local sign = vim.fn.sign_define
+sign('DapBreakpoint', { text = '●', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
+sign('DapBreakpointCondition', { text = '●', texthl = 'DapBreakpointCondition', linehl = '', numhl = '' })
+sign('DapLogPoint', { text = '◆', texthl = 'DapLogPoint', linehl = '', numhl = '' })
+sign('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
+
 return {
-    {
-        "mfussenegger/nvim-dap",
-        config = function()
-            local dap = require('dap')
+  {
+    "mfussenegger/nvim-dap",
+    event = "VeryLazy",
+    dependencies = {
+      "leoluz/nvim-dap-go",
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+      "nvim-neotest/nvim-nio",
+      "williamboman/mason.nvim",
+    },
+    config = function()
+      local dap = require('dap')
+      local ui = require "dapui"
+
+      ----------- Python Config -----------
+
+      -- see https://github.com/mfussenegger/nvim-dap-python/blob/master/lua/dap-python.lua
+      local function python_interpreter()
+        local venv_path = os.getenv('VIRTUAL_ENV')
+        if venv_path then
+          return venv_path .. '/bin/python'
+        end
+        return os.getenv('HOME') .. '/.pyenv/shims/python'
+      end
+
+      local enrich_config = function(config, on_config)
+        if not config.pythonPath and not config.python then
+          config.pythonPath = python_interpreter()
+        end
+        on_config(config)
+      end
+
+      dap.adapters.python = function(cb, _)
+        cb({
+          type = 'executable',
+          command = os.getenv('HOME') .. '/.virtualenvs/debugpy/bin/python',
+          args = { '-m', 'debugpy.adapter' },
+          enrich_config = enrich_config;
+          options = {
+            source_filetype = 'python',
+          },
+        })
+      end
+
+      dap.configurations.python = {
+        {
+          name = 'debugpy: launch module';
+          type = 'python';
+          request = 'launch';
+          program = '${file}',
+          console = 'integratedTerminal',
+          pythonPath = python_interpreter,
+        },
+        {
+          name = 'debugpy: launch package',
+          type = 'python',
+          request = 'launch',
+          program = function()
+              return vim.fn.input('Package name: ', vim.fn.getcwd() .. '/.venv/bin/', 'file')
+            end,
+          cwd = '${workspaceFolder}',
+          args = function()
+            local args_string = vim.fn.input('Arguments: ')
+            return vim.split(args_string, " +")
+          end,
+          console = 'integratedTerminal',
+          pythonPath = python_interpreter,
+        },
+        {
+          name = 'debugpy: launch pytest',
+          type = 'python',
+          request = 'launch',
+          module = 'pytest',
+          args = function()
+            local args_string = vim.fn.input('Arguments: ')
+            return vim.split(args_string, " +")
+          end,
+        },
+      }
+      require("dap-go").setup()
 
 
-            local sign = vim.fn.sign_define
-            sign('DapBreakpoint', { text = '●', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-            sign('DapBreakpointCondition', { text = '●', texthl = 'DapBreakpointCondition', linehl = '', numhl = '' })
-            sign('DapLogPoint', { text = '◆', texthl = 'DapLogPoint', linehl = '', numhl = '' })
+      local enrich_config_lldb = function(config, on_config)
+        on_config(config)
+      end
+      -- https://github.com/llvm/llvm-project/tree/main/lldb/tools/lldb-dap#configuration
+      dap.adapters.lldb = {
+        type = 'executable',
+        command = '/usr/lib/llvm-18/bin/lldb-dap';
+        name = 'lldb',
+        enrich_config = enrich_config_lldb;
+      }
 
-            dap.adapters.lldb = {
-                type = 'executable',
-                command = '/usr/lib/llvm-13/bin/lldb-vscode';
-                name = 'lldb'
-            }
+      -- NOTE do not foget to compile with -g for debug symbols
+      -- https://code.visualstudio.com/docs/cpp/launch-json-reference
+      dap.configurations.cpp = {
+        {
+          name = 'lldb: launch binary',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+              return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+        },
+        {
+          name = 'lldb: attach process',
+          type = 'lldb',
+          request = 'attach',
+          pid = require('dap.utils').pick_process,
+        },
+        {
+          name = 'lldb: launch binary args',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+              return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          args = function()
+            local args_string = vim.fn.input('args: ')
+            return vim.split(args_string, " +")
+          end,
+        },
+        {
+          name = 'lldb: launch rust',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+              return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+          end,
+          showDisassembly = "never",
+          cwd = '${workspaceFolder}',
+          args = function()
+            local test_function = vim.fn.input('args: ')
+            return { 'test', test_function }
+          end,
+        },
+        -- TODO Something for coredump file?
+      }
 
-            -- NOTE do not foget to compile with -g for debug symbols
-            dap.configurations.cpp = {
+      -- NOTE cargo build puts the binary with debug symbols under target/debug/build
+      dap.configurations.rust = dap.configurations.cpp
+      dap.configurations.c = dap.configurations.cpp
+
+      -- DAP
+      vim.api.nvim_create_user_command('Debug', function() dap.continue({ new = true }) end, { nargs = 0 })
+      vim.api.nvim_create_user_command('DebugRestart', function() dap.restart() end, { nargs = 0 })
+      vim.keymap.set('n', '<leader>dc', dap.run_to_cursor)
+      vim.keymap.set('n', '<leader>dbr', dap.clear_breakpoints)
+      vim.keymap.set('n', '<leader>dsb', function() dap.list_breakpoints(true) end)
+      vim.keymap.set('n', '<leader>dl', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+      vim.keymap.set('n', '<C-b>', dap.toggle_breakpoint)
+      vim.keymap.set('n', '<Right>', dap.step_into)
+      vim.keymap.set('n', '<Down>', dap.step_over)
+      vim.keymap.set('n', '<Left>', dap.step_out)
+      vim.keymap.set('n', '<Up>', dap.restart_frame)
+      vim.keymap.set('n', '<leader>dt', dap.terminate)
+      vim.keymap.set('n', '<leader>dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
+
+      require('dapui').setup({
+          layouts = {
+          -- Vertical bar.
+            {
+              elements = {
                 {
-                    name = 'lldb_debugger',
-                    type = 'lldb',
-                    request = 'launch', -- debug adapter should start dubger
-                    program = function()
-                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-                    end,
-                    cwd = '${workspaceFolder}', -- current working directory of Neovim
-                    stopOnEntry = false,
-                    -- args = {'../datasets/dataset_dtu/graph_2007_000033_1.txt.bbk', 'hpf'},
+                  id = 'scopes',
+                  size = 0.30,
                 },
-            }
-
-            -- NOTE cargo build puts the binary with debug symbols under target/debug/build
-            dap.configurations.rust = dap.configurations.cpp
-            dap.configurations.c = dap.configurations.cpp
-
-            -- DAP
-            vim.keymap.set('n', '<leader>dc', function() require('dap').continue() end)
-            vim.keymap.set('n', '<C-b>', function() require('dap').toggle_breakpoint() end)
-            vim.keymap.set('n', '<Right>', function() require('dap').step_into() end)
-            vim.keymap.set('n', '<Down>', function() require('dap').step_over() end)
-            vim.keymap.set('n', '<Left>', function() require('dap').step_out() end)
-            vim.keymap.set('n', '<Up>', function() require('dap').restart_frame() end)
-            vim.keymap.set('n', '<leader>dt', function() require('dap').terminate() end)
-            vim.keymap.set('n', '<leader>dbc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))  end)
-        end
-    },
-    "leoluz/nvim-dap-go",
-    {
-        "mfussenegger/nvim-dap-python",
-        config = function()
-            require('dap-python').setup('/usr/local/bin/python3')
-        end
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
-        config = function()
-
-            require('dapui').setup({
-                    layouts = {
-                    -- Vertical bar.
-                    {
-                        elements = {
-                            {
-                                id = 'scopes',
-                                size = 0.30,
-                            },
-                            {
-                                id = 'watches',
-                                size = 0.40,
-                            },
-                            {
-                                id = 'stacks',
-                                size = 0.30,
-                            },
-                        },
-                        size = 0.3,
-                        position = 'left',
-                    },
-                    -- Horizontal bar.
-                    {
-                        elements = {
-                            'repl',
-                        },
-                        size = 0.2,
-                        position = 'bottom',
-                    },
+                {
+                  id = 'watches',
+                  size = 0.40,
                 },
-            })
-            -- https://github.com/AlexvZyl/nvim/blob/main/lua/alex/keymaps/utils.lua
-            DAP_UI_ENABLED = false
-            local function dap_toggle_ui()
-                require('dapui').toggle()
-                DAP_UI_ENABLED = true
-            end
-            local function dap_float_scope()
-                if not DAP_UI_ENABLED then return end
-                require('dapui').float_element 'scopes'
-            end
-            vim.keymap.set('n', '<leader>ds', function() dap_float_scope() end)
-            vim.keymap.set('n', '<leader>du', function() dap_toggle_ui() end)
-        end,
-    }
+                {
+                  id = 'stacks',
+                  size = 0.30,
+                },
+              },
+              size = 0.3,
+              position = 'left',
+            },
+            -- Horizontal bar.
+            {
+              elements = {
+                'repl',
+              },
+              size = 0.2,
+              position = 'bottom',
+            },
+        },
+      })
+
+      -- Eval var under cursor
+      vim.keymap.set("n", "<space>?", function()
+        require("dapui").eval(nil, { enter = true })
+      end)
+
+      dap.listeners.before.attach.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        ui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        ui.close()
+      end
+    end
+  },
+  {
+    "ldelossa/nvim-dap-projects",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require('nvim-dap-projects').search_project_config()
+    end
+  }
 }

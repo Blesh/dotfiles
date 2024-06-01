@@ -22,7 +22,12 @@ local api = require("nvim-tree.api")
 end)
 
 return {
+  {
     "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    lazy = false,
     config = function()
         local opts = {
           sort_by = "name",
@@ -83,4 +88,5 @@ return {
         -- NVIMTREE
         vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>",{ noremap = true, silent = true })
     end,
+  },
 }
