@@ -17,8 +17,8 @@ return {
             ['isl'] = '@assignment.lhs',
             ['isr'] = '@assignment.rhs',
             -- Not really neccessary considring ci(...
-            ['ifn'] = '@fn.name',
-            ['ifp'] = '@fn.param',
+            -- ['ifn'] = '@fn.name',
+            -- ['ifp'] = '@fn.param',
             ['ii'] = '@call.inner',
             ['at'] = '@class.outer',
             ['it'] = '@class.inner',
@@ -59,7 +59,7 @@ return {
           },
           goto_previous_start = {
             ['mF'] = '@function.outer',
-            ['mP'] = '@fn.param',
+            ['mP'] = '@parameter.inner',
             ['mT'] = '@class.outer',
             ['mC'] = '@conditional.outer',
             ['mB'] = '@block.outer',
@@ -69,6 +69,7 @@ return {
         },
         swap = {
           enable = true,
+          -- TODO are these useful at all?
           swap_next = {
             ["<leader>mp"] = "@parameter.inner",
             ["<leader>mc"] = "@conditional.inner",

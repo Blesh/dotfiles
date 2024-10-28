@@ -57,3 +57,7 @@ autocmd("ModeChanged", {
     end
   end,
 })
+
+-- quickfix q
+
+vim.cmd([[autocmd FileType qf nnoremap <buffer> q :cclose<CR>]])

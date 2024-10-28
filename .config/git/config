@@ -1,3 +1,7 @@
+[user]
+    name = Onur Cakmak-Simic
+    email = onur-cakmak-simic@kinexon.com
+
 [core]
     editor = nvim
 
@@ -13,9 +17,13 @@
 [maintenance]
     auto = false
     strategy = incremental
+[init]
+    defaultBranch = main
 
 [rebase]
     updateRefs = true
 [alias]
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
     b = !git_branches.sh
+[pull]
+    rebase = true

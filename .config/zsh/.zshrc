@@ -14,9 +14,7 @@ PS1='%B%F{15}%1/ %f%b%${vcs_info_msg_0_}${vcs_info_msg_0_:+ }'
 
 alias vf='vim $(fzf)'
 alias ll="ls --color=always -lah"
-alias pip="pip3"
 alias vim="nvim"
-alias python="python3"
 eval $(dircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
 alias ls="ls --color=auto"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
@@ -75,5 +73,12 @@ ulimit -n 4096
 
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
+export PATH=$PATH:$HOME/zig-linux-x86_64-0.12.0-dev.3439+31a7f22b8
 
 alias hwsim=$HOME/nand2tetris/tools/HardwareSimulator.sh
+
+
+# pyenv configuration
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

@@ -151,6 +151,8 @@ return {
     vim.keymap.set('n', '<leader>shi', builtin.highlights, {})
     vim.keymap.set('n', '<leader>sht', builtin.help_tags, {})
     vim.keymap.set('n', '<leader>skm', builtin.keymaps, {})
+    vim.keymap.set('n', '<leader>ss', builtin.resume, {})
+
   end
 }
 

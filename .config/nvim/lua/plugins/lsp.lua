@@ -110,6 +110,9 @@ return {
         },
         rust_analyzer = {
           cargo = { allFeatures = true, },
+          checkOnSave = {
+            command = "clippy",
+          },
         },
         gopls = {},
       }
