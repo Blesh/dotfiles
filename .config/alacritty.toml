@@ -1,0 +1,68 @@
+[font]
+normal.family = "NotoSansM Nerd Font Mono"
+size = 16
+
+# Nord Like Theme
+# [colors.normal]
+# black = "#191C24"
+# red = "#BF616A"
+# green = "#A3BE8C"
+# yellow = "#EBCB8B"
+# blue = "#81A1C1"
+# magenta = "#B48EAD"
+# cyan = "#69A7BA"
+# white = "#BBC3D4"
+#
+# [colors.bright]
+# black = "#2E3440"
+# red = "#D06F79"
+# green = "#B1D196"
+# yellow = "#D08770"
+# blue = "#88C0D0"
+# magenta = "#C895BF"
+# cyan = "#93CCDC"
+# white = "#D8DEE9"
+#
+# [colors.primary]
+# background = "#191C24"
+# foreground = "#D8DEE9"
+
+# [[keyboard.bindings]]
+# action = "Paste"
+# mods = "Control"
+# key = "V"
+
+# Default colors
+[colors.primary]
+background = '#272E33'
+foreground = '#FFFBEF'
+
+[colors.cursor]
+text = '#272E33'
+cursor = '#D3C6AA'
+
+[colors.normal]
+black = '#272E33'
+red = '#E67E80'
+green = '#A7C080'
+yellow = '#DBBC7F'
+blue = '#7FBBB3'
+magenta = '#D699B6'
+cyan = '#83C092'
+white = '#D3C6AA'
+
+# Bright colors
+[colors.bright]
+black = '#2E383C'
+red = '#E67E80'
+green = '#A7C080'
+yellow = '#DBBC7F'
+blue = '#7FBBB3'
+magenta = '#D699B6'
+cyan = '#83C092'
+white = '#FFFBEF'
+
+# orange
+[[colors.indexed_colors]]
+index = 16
+color = "#E69875"

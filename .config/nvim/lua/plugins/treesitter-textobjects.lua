@@ -1,10 +1,8 @@
+-- TODO refactor
 return {
-  -- "nvim-treesitter/nvim-treesitter-textobjects",
-  -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/519
-  -- dot repeat fix branch
-  "kiyoon/nvim-treesitter-textobjects",
-  branch = "fix/builtin_find",
-  event = "VeryLazy",
+  "nvim-treesitter/nvim-treesitter-textobjects",
+  lazy = true,
+  enable = false,
   config = function()
     require("nvim-treesitter.configs").setup({
       textobjects = {
@@ -100,7 +98,11 @@ return {
     local next_hunk_repeat, _ = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
     vim.keymap.set({ "n", "x", "o" }, "<leader>nh", next_hunk_repeat)
 
-    local next_diag, _ = ts_repeat_move.make_repeatable_move_pair(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+    -- TODO Will always shwo an error when first opening something without errors as now call functions
+    local next_diag, _ = ts_repeat_move.make_repeatable_move_pair(
+      function() vim.diagnostic.jump({count = 1, float = true}) end,
+      function() vim.diagnostic.jump({count = -1, float = true}) end
+    )
     vim.keymap.set({ "n", "x", "o" }, "[d", next_diag)
     -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
     vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })

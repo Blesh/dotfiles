@@ -1,23 +1,27 @@
-vim.api.nvim_exec2([[
-  autocmd BufRead,BufNewFile *.tpp setfiletype cpp
-]], {output = false})
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = '*.tpp',
+  command = "set filetype cpp"
+})
 
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = { '*.txt', '*.tex', '*.md' },
+  callback = function(ev)
+    vim.opt_local.textwidth = 90
 
--- Spell checking only for relevant files
-vim.api.nvim_exec2([[
-    autocmd BufRead,BufNewFile *.tex,*.txt setlocal spell
-]], {output = false})
+    vim.opt_local.wrap = true
+    vim.opt_local.formatoptions:append('t')
+    vim.opt_local.colorcolumn = '91'
 
-vim.cmd [[ autocmd FileType markdown,text,tex setlocal wrap ]]
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.spell = true
+  end
+})
 
-local api = vim.api
-local autocmd = api.nvim_create_autocmd
-local augroup = api.nvim_create_augroup
-
-local g = augroup("user/keep_yank_position", { clear = true })
+local g = vim.api.nvim_create_augroup("user/keep_yank_position", { clear = true })
 
 -- https://github.com/neovim/neovim/issues/12374
-autocmd("ModeChanged", {
+vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { "n:no", "no:n" },
   group = g,
   callback = function(ev)
@@ -34,7 +38,7 @@ autocmd("ModeChanged", {
   end,
 })
 
-autocmd("ModeChanged", {
+vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = {
     "V:n",
     "n:V",
@@ -58,6 +62,44 @@ autocmd("ModeChanged", {
   end,
 })
 
--- quickfix q
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*qf*',
+  command = "nnoremap <buffer> q :cclose<CR>"
+})
 
-vim.cmd([[autocmd FileType qf nnoremap <buffer> q :cclose<CR>]])
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'help',
+  command = "nnoremap <buffer> q :q<CR>"
+})
+
+-- TODO Disable Semantig Highlighting or not
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     if client then
+--       client.server_capabilities.semanticTokensProvider = nil
+--     end
+--     -- client.server_capabilities.semanticTokensProvider = nil
+--   end,
+-- });
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  desc = "Change CWD to the first argument if it is a directory",
+  callback = function()
+    -- vim.v.argv is a list of command line arguments passed to Neovim
+    if vim.v.argv and #vim.v.argv > 2 then
+      -- [1]=nvim, [2]=--embed, [3]=directory
+      local third_arg = vim.v.argv[3]
+      -- vim.fn.isdirectory() resolves the path relative to the CWD
+      if vim.fn.isdirectory(third_arg) == 1 then
+        -- vim.fn.fnamemodify(path, modifiers) with ":p" gives the full absolute path.
+        local abs_path = vim.fn.fnamemodify(third_arg, ":p")
+        if abs_path and abs_path ~= "" then
+          -- vim.fn.chdir() is a direct way to change directory in Lua.
+          vim.fn.chdir(abs_path)
+        end
+      end
+    end
+  end,
+  once = true
+})

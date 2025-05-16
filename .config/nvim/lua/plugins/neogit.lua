@@ -1,12 +1,13 @@
+-- TODO refactor
 return {
   "NeogitOrg/neogit",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "sindrets/diffview.nvim",
-    "nvim-tree/nvim-web-devicons",
+    -- "nvim-tree/nvim-web-devicons",
   },
   event = "VeryLazy",
-  cmd = "Neogit",
+  -- cmd = "Neogit",
   config = function()
     local neogit = require('neogit')
     local diffview = require('diffview')

@@ -1,11 +1,11 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  --event = { "BufReadPre", "BufNewFile" },
   event = "VeryLazy",
   dependencies = {
     -- "nvim-treesitter/nvim-treesitter-textobjects",
     "kiyoon/nvim-treesitter-textobjects"
   },
+  enable = false,
   run = ':TSUpdate',
   config = function()
       require'nvim-treesitter.configs'.setup {

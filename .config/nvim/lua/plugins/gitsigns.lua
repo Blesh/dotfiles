@@ -1,6 +1,7 @@
 return {
     "lewis6991/gitsigns.nvim",
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    lazy = true,
     config = function()
         local git_char = '▍'
         require('gitsigns').setup {

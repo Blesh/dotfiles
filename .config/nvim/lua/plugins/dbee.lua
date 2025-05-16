@@ -1,10 +1,11 @@
-
+-- TODO refactor
 return {
   {
     -- https://github.com/tjdevries/config.nvim
     "kndndrj/nvim-dbee",
     dependencies = { "MunifTanjim/nui.nvim" },
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    lazy = true,
     build = function()
       require("dbee").install()
     end,

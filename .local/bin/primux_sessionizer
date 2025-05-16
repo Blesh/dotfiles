@@ -2,7 +2,7 @@
 # see https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
 # everything inside $() is executed and std returned
-session=$(fd --min-depth 1 --max-depth 1 --type d '' ~ ~/mine ~/dev ~/repos | fzf)
+session=$(fd --min-depth 1 --max-depth 1 --type d '' ~ ~/mine ~/work ~/repos | fzf)
 
 if [[ -z $session ]]; then
     exit 0

@@ -1,6 +1,6 @@
 return {
   'stevearc/conform.nvim',
-  lazy = false,
+  lazy = true,
   keys = {
     {
       '<leader>f',

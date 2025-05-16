@@ -2,6 +2,19 @@ local opts = { noremap = true, silent = true }
 
 -- Leader
 -- do nothing in (most) modes, where do I have this from?
+
+-- `vim.keymap.set({mode}, {lhs}, {rhs}, {opts})` Defines a |mapping| of |keycodes| to a function or keycodes.
+-- `mode (string|string[])`: mode short-name 'n', 'i', 'v', 'x',
+-- `lhs (string)`: keycodes triggering rhs
+-- `rhs (string|function)`: executed as a result of `lhs` in `mode`
+-- `opts (table?): { -- see h map-arguments
+--      buffer: <id> -- for buffer local keymaps
+--      noremap: <bool> -- disalbes recursive mapping, i.e., disallow mapping of {rhs}
+--      desc: <string> -- human readable description
+--      callback: <string> -- lua function called in place of {rhs} (why is this useful?)
+--      replace_keycodes: <bool> -- ?
+--      silent <bool>: mapping will not be echoed in the command line, to get rid of messages from commands we need to add
+--                  `:silent` to the command as well
 vim.keymap.set("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -52,5 +65,7 @@ vim.keymap.set("n", "<C-f>", ":silent !tmux neww primux_sessionizer<CR>", opts)
 vim.keymap.set('', 'H', '^')
 vim.keymap.set('', 'L', '$')
 
-vim.keymap.set("n", "<leader>cn", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<leader>cp", "<cmd>cprev<CR>zz")
+-- 0.11 introduced default keybindings '[q' and ']q' https://github.com/neovim/neovim/pull/28525/files
+-- 0.11 also introduce `[<Space>` and `]<Space>` to add newlines above and below the current line in normal mode
+
+vim.keymap.set('n', '<leader>cd', ':DiffviewClose<CR>', { noremap = true, silent = true })

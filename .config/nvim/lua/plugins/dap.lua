@@ -4,6 +4,7 @@ sign('DapBreakpointCondition', { text = '●', texthl = 'DapBreakpointCondition'
 sign('DapLogPoint', { text = '◆', texthl = 'DapLogPoint', linehl = '', numhl = '' })
 sign('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
 
+-- TODO refactor
 return {
   {
     "mfussenegger/nvim-dap",
@@ -218,6 +219,7 @@ return {
   },
   {
     "ldelossa/nvim-dap-projects",
+    event = "VeryLazy",
     dependencies = {
       "mfussenegger/nvim-dap",
     },

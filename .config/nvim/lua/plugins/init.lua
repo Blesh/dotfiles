@@ -1,66 +1,51 @@
 return {
   "nvim-lua/plenary.nvim",
   {
-      "iamcco/markdown-preview.nvim",
-      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-      build = "cd app && yarn install",
-      config = function()
-          vim.g.mkdp_filetypes = { "markdown" }
-          vim.g.mkdp_markdown_css = '$HOME/github-markdown-light.css'
-          vim.g.mkdp_theme = 'light'
-          vim.g.mkdp_preview_options = {
-            mkit = {},
-            katex = {},
-            uml = {},
-            maid = {},
-            disable_sync_scroll = 1,
-            sync_scroll_type = 'middle',
-            hide_yaml_meta = 1,
-            sequence_diagrams = {},
-            flowchart_diagrams = {},
-            content_editable = false,
-            disable_filename = true,
-            toc = {}
-          }
-      end,
-      ft = { "markdown" }
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- 'nvim-tree/nvim-web-devicons' },
+    ft = "markdown",
+    config = function()
+      require('render-markdown').setup({
+        heading = {
+          icons = {},
+        },
+        render_modes = { 'n', 'c', 't', 'i', 'no' },
+        quote = {
+          icon = '|',
+        },
+        code = {
+          border = 'thin',
+        }
+      })
+      vim.keymap.set('n', '<leader>mt', function() require('render-markdown').buf_toggle() end, {})
+    end
   },
   {
-      "mbbill/undotree",
-      event = "VeryLazy",
-      config = function()
-          vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-      end
-  },
-  {
-      "folke/zen-mode.nvim",
-      event = "VeryLazy",
-      opts = {
-          window = {
-              width = .70,
-              backdrop = 1,
-          }
-      }
-  },
-  {
-      'echasnovski/mini.surround',
-      version = '*',
-      event = "VeryLazy",
-      config = function()
-          require('mini.surround').setup()
-      end
-  },
-  {
-    "michaelrommel/nvim-silicon",
-    cmd = "Silicon",
-    main = "nvim-silicon",
+    "mbbill/undotree",
     event = "VeryLazy",
+    config = function()
+      vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+    end
+  },
+  {
+    "folke/zen-mode.nvim",
+    -- event = "VeryLazy",
+    lazy = true,
     opts = {
-      no_window_controls = true,
-      output = function()
-        return "/home/onurcakmak/code_snaps/" .. os.date("!%Y-%m-%dT%H-%M-%SZ") .. "_code.png"
-      end,
-      background_image = "/home/onurcakmak/code_snaps/background.jpg",
+      window = {
+        width = .70,
+        backdrop = 1,
+      }
     }
   },
+  {
+    "lervag/vimtex",
+    lazy = false,     -- we don't want to lazy load VimTeX
+    -- tag = "v2.15", -- uncomment to pin to a specific release
+    init = function()
+      -- VimTeX configuration goes here, e.g.
+      vim.g.vimtex_view_method = "zathura_simple"
+      vim.g.vimtex_imaps_enabled = 0
+    end
+  }
 }
