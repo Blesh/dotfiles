@@ -28,7 +28,12 @@ pub mod test {
 
     #[test]
     fn it_works_01() {
-        assert_eq!(Solution<prob_num>::<fn_name>(<args>), <exp>);
+        assert_eq!(Solution<prob_num>::<fn_name>(<args01>), <exp01>);
+    }
+
+    #[test]
+    fn it_works_02() {
+        assert_eq!(Solution<prob_num>::<fn_name>(<args02>), <exp02>);
     }
 }
 ]],
@@ -37,8 +42,10 @@ pub mod test {
       fn_name = i(2, "fn_name"),
       params = i(3, "params"),
       rt_type = i(4, "rt_type"),
-      args = i(5, "args"),
-      exp = i(6, "expected"),
+      args01 = i(5, "args01"),
+      exp01 = i(6, "expected01"),
+      args02 = i(7, "args02"),
+      exp02 = i(8, "expected02"),
       exit = i(0),
   },
   {

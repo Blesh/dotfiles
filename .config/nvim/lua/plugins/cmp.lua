@@ -131,9 +131,51 @@ return {
           return vim_item
         end,
       },
+      -- completion = {
+      --   completeopt = 'menu,menuone,noinsert',
+      -- },
       window = {
        documentation = cmp.config.window.bordered(),
       },
+    })
+    -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline({ '/', '?' }, {
+      -- mapping = cmp.mapping.preset.cmdline(),
+      -- mapping = {
+      --   ["<CR>"] = cmp.mapping( cmp.mapping.confirm
+      --   { behavior = cmp.ConfirmBehavior.Insert, select = false, }, { "i", "c" }),
+      --   ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+      --   ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+      --   -- exit the completion window without choosing something
+      --   ["<C-e>"] = cmp.mapping {
+      --     i = cmp.mapping.abort(),
+      --     c = cmp.mapping.close(),
+      --   },
+      --   ['<C-o>'] = cmp.mapping(cmp.mapping.complete(), {'i','c'})
+      -- },
+      mapping = cmp.mapping.preset.cmdline({
+          ["<C-n>"] = { c = cmp.mapping.select_next_item() },
+          ["<C-p>"] = { c = cmp.mapping.select_prev_item() },
+          ["<CR>"]  = { c = cmp.mapping.confirm({ select = false }) },
+      }),
+      sources = {
+        { name = 'buffer' }
+      }
+    })
+    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline(':', {
+      -- https://github.com/hrsh7th/cmp-cmdline/issues/108#issuecomment-2052449375
+      mapping = cmp.mapping.preset.cmdline({
+          ["<C-n>"] = { c = cmp.mapping.select_next_item() },
+          ["<C-p>"] = { c = cmp.mapping.select_prev_item() },
+          ["<CR>"]  = { c = cmp.mapping.confirm({ select = false }) },
+      }),
+      sources = cmp.config.sources({
+        { name = 'path' }
+      }, {
+        { name = 'cmdline' }
+      }),
+      matching = { disallow_symbol_nonprefix_matching = false }
     })
   end
 }

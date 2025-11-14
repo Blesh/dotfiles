@@ -6,16 +6,37 @@ return {
     ft = "markdown",
     config = function()
       require('render-markdown').setup({
-        heading = {
-          icons = {},
-        },
-        render_modes = { 'n', 'c', 't', 'i', 'no' },
+        -- heading = {
+        --    icons = {},
+        -- },
+        -- see `:h mode()` for all mode short-names
+        render_modes = true,
         quote = {
           icon = '|',
         },
         code = {
           border = 'thin',
-        }
+        },
+        latex = {
+          -- Turn on / off latex rendering.
+          -- enabled = true,
+          -- Additional modes to render latex.
+          -- render_modes = { 'n', 'c', 't', 'i', 'no' },
+          -- highlight = '',
+          -- render_modes = false,
+          -- Executable used to convert latex formula to rendered unicode.
+          -- converter = 'latex2text',
+          -- Highlight for latex blocks.
+          -- highlight = 'RenderMarkdownMath',
+          -- Determines where latex formula is rendered relative to block.
+          -- | above | above latex block |
+          -- | below | below latex block |
+          -- position = 'above',
+          -- Number of empty lines above latex blocks.
+          -- top_pad = 0,
+          -- Number of empty lines below latex blocks.
+          -- bottom_pad = 0,
+        },
       })
       vim.keymap.set('n', '<leader>mt', function() require('render-markdown').buf_toggle() end, {})
     end

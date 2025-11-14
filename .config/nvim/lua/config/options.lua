@@ -8,9 +8,10 @@
 -- `vim.opt` exists for conveniently interacting with list and map-stule options from lua, while `vim.o` allows access to
 -- vim options which while behaving like Vimscript `:set`.
 
+vim.filetype.add({
+  extension = { log = 'logfile' }
+})
 
--- manually set to false as otherwise meinz-scheme breaks since 0.10
-vim.opt.termguicolors = true
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus" -- need wl-clipboard when using wayland
 vim.opt.fileencoding = "utf-8"
@@ -18,12 +19,18 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Get rid of auto comment on new line
-vim.cmd('autocmd BufEnter * set formatoptions-=cro')
-vim.cmd('autocmd BufEnter * setlocal formatoptions-=cro')
+-- vim.cmd('autocmd BufEnter * set formatoptions-=cro')
+-- vim.cmd('autocmd BufEnter * setlocal formatoptions-=cro')
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+-- https://github.com/hrsh7th/nvim-cmp/discussions/941
+-- vim.g.complete=""
+-- vim.g.completeopt=""
+-- TODO properly integrate
+-- vim.opt.foldmethod = 'expr'
+-- vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.swapfile = false
@@ -41,7 +48,7 @@ vim.opt.scrolloff = 11
 vim.opt.sidescrolloff = 30
 
 -- try treesitter indentation only for now
-vim.opt.autoindent = false
+vim.opt.autoindent = true
 -- Not specifying any highlight groups results the TUI to use
 -- host-terminal default cursor colors, typically inverted bg and fg
 vim.opt.guicursor = "i:block"
@@ -65,3 +72,6 @@ vim.opt.fillchars = {
   vertright = '|',
   verthoriz = '|',
 }
+
+vim.opt.fixeol = true  -- Fix missing end-of-line at end of text file (default: true)
+vim.opt.eol = true     -- End-of-line for current buffer (default: true)

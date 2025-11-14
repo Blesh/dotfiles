@@ -180,6 +180,11 @@ return {
             },
           },
           bcommits = {
+            winopts = {
+              preview = {
+                wrap = true,
+              },
+            },
             actions = {
               ["ctrl-s"] = actions.git_buf_vsplit,
               ["ctrl-o"] = function(selected, opts)
@@ -196,6 +201,13 @@ return {
               end
             },
           },
+          commits = {
+            winopts = {
+              preview = {
+                wrap = true,
+              },
+            },
+          }
         },
         grep = {
           RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH,
@@ -206,6 +218,7 @@ return {
             preview = {
               scrollbar = false,
               layout = "vertical",
+              wrap = true,
             },
           },
         },
@@ -234,6 +247,7 @@ return {
       -- uses git ls-files which out of the box respects .gitignore, .git/info/exclude, etc.
       -- Default preview shows a git diff against the last commit
       vim.keymap.set('n', '<leader>sgc', fzf.git_bcommits)
+      vim.keymap.set('n', '<leader>sga', fzf.git_commits)
       -- not really useful for my workflow, the only nice thing would be in general a nice way to inspect stash contents
       vim.keymap.set('n', '<leader>sgs', fzf.git_stash)
 
@@ -293,7 +307,9 @@ return {
       vim.keymap.set('n', '<leader>/', fzf.lgrep_curbuf)
       -- vim.keymap.set('n', '<leader>sr', fzf.live_grep_resume) -- difference to below?
       vim.keymap.set('n', '<leader>sr', fzf.resume)
-      vim.keymap.set('n', '<leader>sht', fzf.helptags)
+      -- TODO By default open in vertical split without losing exact position
+      -- Also highlighting of special comment elements like TODO, FIXME, WARN seems to be broken
+      vim.keymap.set('n', '<leader>sht', function() fzf.helptags({ actions = { ["enter"] = actions.file_vsplit } }) end)
       vim.keymap.set('n', '<leader>smp', fzf.manpages)
       vim.keymap.set('n', '<leader>shi', fzf.highlights)
       vim.keymap.set('n', '<leader>skm', fzf.keymaps)

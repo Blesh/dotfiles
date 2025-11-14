@@ -6,12 +6,15 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.api.nvim_create_autocmd('BufEnter', {
   pattern = { '*.txt', '*.tex', '*.md' },
   callback = function(ev)
+    vim.opt_local.foldlevelstart = 99
     vim.opt_local.textwidth = 90
-
+    vim.opt_local.linebreak = true
+    vim.opt_local.breakindent = true
     vim.opt_local.wrap = true
     vim.opt_local.formatoptions:append('t')
-    vim.opt_local.colorcolumn = '91'
-
+    vim.opt_local.foldmethod = 'expr'
+    vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.keymap.set("n", "<Enter>", "za", { noremap = true, silent = true, buffer = 0 })
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
     vim.opt_local.spell = true

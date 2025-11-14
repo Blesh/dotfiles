@@ -4,15 +4,21 @@ MY_ZSH_COMPLETIONS_DIR="$HOME/.zsh/completions"
 if [[ -d "$MY_ZSH_COMPLETIONS_DIR" ]]; then
   fpath=("$MY_ZSH_COMPLETIONS_DIR" $fpath)
 fi
+# https://github.com/zsh-users/zsh-completions.git
+fpath=(${HOME}/repos/zsh-completions/src $fpath)
 
-autoload -Uz compinit # Enable zstyle for autocompletion http://zsh.sourceforge.net/Doc/Release/Completion-System.html
+autoload -Uz compinit # Enable zstyle for Tab autocompletion http://zsh.sourceforge.net/Doc/Release/Completion-System.html
 # https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3401477#gistcomment-3401477
+# .zcompdump is something like a pre-compiled cache for our shell completions
+# compinit searches through the fpath to find the available completion scripts `_git`, `_rg`, etc. We use
+# the cache unless we do not have `zcompdump` or it's outdated / something changed
 if [[ -n ${HOME}/.zcompdump(N.mh+24) ]]; then
     compinit;
 else
     compinit -C;
 fi;
-zmodload zsh/complist # Enable menuselect keybindings
+# built in module that enables menu popping up when we press TAB, customized via `zstyle ':completion:*:default` commands below
+zmodload zsh/complist
 _comp_options+=(globdots) # Tab complete includes dot files. 'setopt globdots' for everything.
 
 
@@ -44,6 +50,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 export LANG=en_US.UTF-8 # Get rid of locale error, not sure what those values do
 export PSQL_EDITOR=/usr/local/bin/nvim
+export PSQL_PAGER=/usr/local/bin/nvim
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#888888'
+
 
 ##########################
 ### Prompt
@@ -69,10 +79,15 @@ precmd() {
 alias ll="ls --color=always -lah"
 eval $(dircolors ~/.dir_colors) # http://www.linux-sxs.org/housekeeping/dircolor.html
 alias lldb='/opt/llvm-19/bin/lldb'
-alias ls="ls --color=auto"
+alias ls="ls --color=always"
 alias bat="batcat --paging=never"
+# alias cat="batcat --paging=never"
 
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # Tab complete colors
+# zstyle 'context' 'style' 'value' to configure behavior and / or appearance of various subsystems
+#  - context: pattern defining when this rule should be applied
+#  - style: setting we want to change
+#  - value: value we are assigning to this setting
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # make tab completion have some color as ls output
 zstyle ':completion:*' menu select=0 # Tab complete selection with arrows
 
 bindkey -v # http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets
@@ -83,6 +98,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey '^w' backward-kill-word
 bindkey -M viins 'jj' vi-cmd-mode
 bindkey -s ^f "primux_sessionizer\n"
+bindkey '^ ' autosuggest-accept
 
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -115,19 +131,7 @@ source <(fzf --zsh)
 
 # NOTE Colors with `+` refer to slected higlights
 # https://vitormv.github.io/fzf-themes/
-# fg := normal text color, fg+ := text color selection
-# bg := normal background color, bg+ := selection background
-# hl := matches, hl+ := selection match
-# info := number of matches of possible files and in parenthesis current selection count
-# spinner := color of icon next to `info`
-# marker := color of the icon to the left of selections
-# pointer := color of the icon to the left of active / current line
-# prompt := color of icon before the text we search for
-# header := whater text separating prompt and results
-# gutter := Filler space to the left of results
-# scrollbar := scrollbar to the right
-# separator := Line between prompt and results
-# border := border around everything
+# See fzf man 'GLOBAL STYLES' for meaning of color names
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --border=none
   --color=fg:#FFFBEF,fg+:#FFFBEF,bg:#272E33,bg+:#272E33
@@ -147,10 +151,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git .'
 
-
 # TODO does not show `fzf` and the search via fuzzy searching is not that nice to find exact matches?
 fman() {
-    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r -I {} zsh -c 'MANPAGER="cat" man {} | nvim -c "set ft=man" -c "nnoremap <buffer> q :q!<CR>" -'
+    man -k . | fzf --exact --prompt='Man> ' | awk '{print $1}' | xargs -r -I {} zsh -c 'MANPAGER="cat" man {} | nvim -c "set ft=man" -c "nnoremap <buffer> q :q!<CR>" -'
 }
 
 # TODO not sure whether we need this vs nvim + CTRL+T
@@ -166,13 +169,13 @@ nvim() {
 }
 
 # https://github.com/junegunn/everything.fzf/blob/main/rg.fzf
-rgopen() {
-    RELOAD='reload:rg --column --color=always --smart-case {q} || :'
-    fzf --disabled --ansi \
-        --bind "start:$RELOAD" --bind "change:$RELOAD" --bind 'enter:become:nvim {1} +{2}' --bind 'ctrl-o:execute:nvim {1} +{2}' \
-        --delimiter : --preview 'batcat --style=full --color=always --highlight-line {2} {1}' \
-        --preview-window '~4,+{2}+4/3,<80(up)'
-}
+# rgopen() {
+#     RELOAD='reload:rg --column --color=always --smart-case {q} || :'
+#     fzf --disabled --ansi \
+#         --bind "start:$RELOAD" --bind "change:$RELOAD" --bind 'enter:become:nvim {1} +{2}' --bind 'ctrl-o:execute:nvim {1} +{2}' \
+#         --delimiter : --preview 'batcat --style=full --color=always --highlight-line {2} {1}' \
+#         --preview-window '~4,+{2}+4/3,<80(up)'
+# }
 
 rgfilter() {
     local filename="$1"
@@ -185,6 +188,8 @@ rgfilter() {
 
 }
 
+# TODO Trying to add this bindings for navigating the fzf results seems to not work
+# --bind 'ctrl-d:page-down,ctrl-u:page-up' \
 ftail() {
     local filename="$1"
     if [ -z "$filename" ]; then
@@ -200,12 +205,16 @@ ftail() {
     local rg_base_cmd="rg --line-buffered --color=always --smart-case"
     RELOAD="reload:tail --follow --lines $lines_to_display_in_fzf '$filename' | $rg_base_cmd {q} || :"
 
-    # --bind 'ctrl-o:select-all+become(nvim - < <(printf "%s\n" {+}))' \
     fzf --ansi --disabled \
         --tac --tail 11000 \
         --multi \
         --bind "start:$RELOAD" \
         --bind "change:$RELOAD" \
+        # TODO Order of logs is in reverse in neovim buffer and we seem to have left-over tail and rg processes
+        # which is probably due the zsh processing not properly exiting when using the `become` call, which seems to just
+        # properly kill the fzf process
+        # 4101411 1 /usr/bin/zsh -c tail --follow --lines 100000 '/tmp/riot_logs/node1.log'
+        #           | rg --line-buffered --color=always --smart-case 'locationcomputer' || :
         --bind 'ctrl-o:select-all+become(cat {+f} | nvim -)' \
         --no-sort --exact --wrap \
         --header "Tailing '$filename' with ripgrep. Ctrl-o to open in neovim buffer. Query: rg <type-here>" \
@@ -225,13 +234,23 @@ ftask() {
 FZF_DOCKER_PS_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}"
 FZF_DOCKER_PS_START_FORMAT="table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}"
 
+_fzf_complete_dive() {
+  ARGS="$@"
+  if [[ $ARGS == 'dive'* ]]; then
+     _fzf_complete "--multi --header-lines=1 " "$@" < <(
+      docker images
+    )
+  fi
+}
+
+_fzf_complete_dive_post() {
+  # Post-process the fzf output to keep only the image ID
+  awk '{print $3}'
+}
+
 _fzf_complete_docker() {
   ARGS="$@"
-  if [[ $ARGS == 'docker ' ]]; then
-    _fzf_complete "--reverse -n 1 --height=80%" "$@" < <(
-      echo $DOCKER_COMMANDS
-    )
-  elif [[ $ARGS == 'docker tag'* || $ARGS == 'docker -f'* || $ARGS == 'docker run'* || $ARGS == 'docker push'* ]]; then
+  if [[ $ARGS == 'docker tag'* || $ARGS == 'docker -f'* || $ARGS == 'docker run'* || $ARGS == 'docker push'* ]]; then
     _fzf_complete "--multi --header-lines=1" "$@" < <(
       docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedSince}}"
     )
@@ -263,10 +282,10 @@ _fzf_complete_docker_post() {
   awk '{print $1}'
 }
 
-dklog() {
+dlog() {
     local container_list
     # Get container list: ID, Names, Image, Status (using Tab as delimiter)
-    container_list=$(docker ps --format "{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}")
+    container_list=$(docker ps -a --format "{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}")
 
     if [[ -z "$container_list" ]]; then
         echo "No running Docker containers found."
@@ -351,7 +370,7 @@ dklog() {
 }
 
 # Function to fuzzy find and exec into a running Docker container
-dkex() {
+dex() {
   # Get container list formatted for fzf (ID, Names, Image)
   local container_list
   container_list=$(docker ps --format "{{.ID}}\t{{.Names}}\t{{.Image}}")

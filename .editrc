@@ -1,0 +1,47 @@
+lldb:bind ^H vi-delete-prev-char
+# TODO This binding does not allow us to write a `j` character
+# without having to use `Ctrl+V` beforehand, which makes `libedit`
+# interpret the next character literally instead of as part of a binding
+# lldb:bind jj vi-command-mode
+lldb:bind ^[ vi-command-mode
+lldb:bind -a b vi-prev-word
+lldb:bind -a b vi-prev-big-word
+lldb:bind -a w vi-next-word
+lldb:bind -a W vi-next-big-word
+lldb:bind -a a vi-add
+lldb:bind -a A vi-add-at-eol
+lldb:bind -a i vi-insert
+lldb:bind -a I vi-insert-at-bol
+lldb:bind -a e vi-end-word
+lldb:bind -a E vi-end-big-word
+
+lldb:bind -a y vi-yank
+lldb:bind -a Y vi-yank-end
+lldb:bind -a d vi-delete-meta
+lldb:bind -a u vi-undo
+
+lldb:bind -a % vi-match
+lldb:bind -a . vi-redo
+lldb:bind -a ~ vi-change-case
+
+lldb:bind -a C vi-change-to-eol
+lldb:bind -a c vi-change-meta
+
+lldb:bind -a t vi-to-next-char
+lldb:bind -a T vi-to-prev-char
+lldb:bind -a f vi-next-char
+lldb:bind -a F vi-prev-char
+lldb:bind -a ; vi-repeat-next-char
+lldb:bind -a , vi-repeat-prev-char
+
+lldb:bind -a p vi-paste-next
+lldb:bind -a P vi-paste-prev
+
+lldb:bind -a r vi-replace-char
+
+lldb:bind -a k ed-prev-history
+lldb:bind -a j ed-next-history
+lldb:bind -a x ed-delete-next-char
+
+
+

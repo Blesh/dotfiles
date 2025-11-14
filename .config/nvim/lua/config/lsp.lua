@@ -20,12 +20,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     vim.keymap.set('n', 'gh', ":LspClangdSwitchSourceHeader <CR>", opts) -- TODO creat mapping only for clangd / c
 
+    local document_highlight = vim.api.nvim_create_augroup('LspHighlights', { clear = false })
+    vim.api.nvim_clear_autocmds({ buffer = event.buf, group = document_highlight })
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     -- see https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#metaModel
     -- and vim.lsp.protocol.Methods for all possible methods which are defined in the neovim project file
     -- neovim/runtime/lua/vim/lsp/protocol.lua
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
       vim.api.nvim_create_autocmd('CursorMoved', {
+        buffer = event.buf,
+        group = document_highlight,
         callback = function(_)
           vim.lsp.buf.clear_references()
           vim.lsp.buf.document_highlight()
@@ -48,7 +52,7 @@ vim.lsp.config('clangd', {
   capabilities = capabilities,
   -- https://github.com/hrsh7th/nvim-cmp/issues/999
   cmd = { "clangd", "--header-insertion-decorators=false" },
-  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "tpp", "cc" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "tpp", "cc" },
 })
 
 -----------------------
@@ -62,6 +66,60 @@ vim.lsp.config('rust_analyzer', {
     command = "clippy",
   },
 })
+
+-----------------------
+------- asm_lsp
+-----------------------
+vim.lsp.config('asm_lsp', {
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    vim.diagnostic.enable(false, { buf = bufnr })
+  end,
+})
+
+-----------------------
+------- gopls
+-----------------------
+vim.lsp.config('gopls', {
+  capabilities = capabilities,
+})
+
+-----------------------
+------- ruff
+-----------------------
+vim.lsp.config('ruff', {
+  capabilities = capabilities,
+  root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml', 'setup.py', '.git' }
+})
+
+-----------------------
+------- basedpyright
+-----------------------
+vim.lsp.config('basedpyright', {
+  capabilities = capabilities,
+  openFilesOnly = false,
+  settings = {
+    basedpyright = {
+      analysis = {
+        diagnosticMode = "workspace",
+        typeCheckingMode = "basic",
+        -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-rule-overrides
+        -- https://docs.basedpyright.com/latest/configuration/config-files/#type-check-rule-overrides
+        -- https://github.com/microsoft/pyright/blob/main/packages/vscode-pyright/package.json
+        diagnosticSeverityOverrides = {
+          reportUnknownVariableType = "none",
+          reportUnknownMemberType = "none",
+          reportAttributeAccessIssue = "none",
+          reportUnknownArgumentType = "none",
+          reportUnknownParameterType = "none",
+          reportUnannotatedClassAttribute = "none",
+          reportArgumentType = "none",
+        }
+      }
+    }
+  }
+})
+
 
 -----------------------
 ------- lua_ls
@@ -113,6 +171,21 @@ vim.lsp.config('bash_ls', {
 })
 
 -----------------------
+------- marksman
+-----------------------
+vim.lsp.config('marksman', {
+  capabilities = capabilities,
+})
+
+-----------------------
+------- protobuf
+-----------------------
+vim.lsp.config('protols', {
+  cmd = { "protols", "--include-paths=/home/onur.cakmak-simic/.conan2/p/b/protobddff4eaf7bde/p/include/" },
+  capabilities = capabilities,
+})
+
+-----------------------
 ------- jsonls
 -----------------------
 vim.lsp.config('jsonls', {
@@ -157,10 +230,16 @@ vim.lsp.config('yamlls', {
 })
 
 vim.lsp.enable({
-  'yamlls',
+  -- 'yamlls',
   'jsonls',
+  'protols',
   'bash_ls',
   'lua_ls',
   'rust_analyzer',
-  'clangd'
+  'clangd',
+  -- 'ruff', Note enough functionality yet
+  'basedpyright',
+  'gopls',
+  'asm_lsp',
+  -- 'marksman',
 })
